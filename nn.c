@@ -488,53 +488,40 @@ void nn_mul_kara(nn_t p, nn_src_t a, long m, nn_src_t b, long n)
 
 char * nn_get_str(nn_t a, long m)
 {
-   long digits, i, j;
-   char * str;
-   word_t ci, d;
+   /* 9.63... is log_10(2^32) */
+   long i = 0, j;
+   long digits = ceil(m * 9.632959861247398 * (WORD_BITS/32)) + (m == 0);
+   char * str = (char *) malloc(digits + 1);
+   word_t ci, d = 10L << (WORD_BITS - 4);
    nn_t q1, q2;
    TMP_INIT;
 
-   if (m == 0) {
-      str = (char *) malloc(2);
+   if (m == 0)
       str[0] = '0';
-      str[1] = '\0';
+   else {
+      TMP_START;
+      q1 = TMP_ALLOC(m*sizeof(word_t));
+      q2 = TMP_ALLOC(m*sizeof(word_t));
+      nn_copyi(q1, a, m);
 
-      return str;
+      /* compute digits in reverse order */
+      for (i = digits; m > 0; i--) {
+         ci = nn_shl(q1, q1, m, WORD_BITS - 4, 0);
+         str[i - 1] = 48 + (char) (nn_divrem_1(q2, q1, m, d, ci) >> (WORD_BITS - 4));
+         nn_swap(q1, q2);
+         m = nn_normalise(q1, m);
+      }
+
+      TMP_END;
+
+      /* didn't get the right number of digits, shift */
+      if (i) {
+         for (j = i; j < digits; j++)
+            str[j - i] = str[j];
+      }
    }
 
-   /* compute number of digits and allocate string */
-   digits = ceil((double)m * 9.632959861247398); /* 9.63... is log_10(2^32) */
-#if WORD_BITS == 64
-   digits *= 2.0; /* log_10(2^64) */
-#endif
-
-   str = (char *) malloc(digits + 1);
-
-   TMP_START;
-   q1 = TMP_ALLOC(m*sizeof(word_t));
-   q2 = TMP_ALLOC(m*sizeof(word_t));
-   nn_copyi(q1, a, m);
-
-   d = 10L << (WORD_BITS - 4);
-
-   /* compute digits in reverse order */
-   for (i = digits - 1; m > 0; i--) {
-      ci = nn_shl(q1, q1, m, WORD_BITS - 4, 0);
-      str[i] = 48 + (char) (nn_divrem_1(q2, q1, m, d, ci) >> (WORD_BITS - 4));
-      nn_swap(q1, q2);
-      m = nn_normalise(q1, m);
-   }
-   i++;
-
-   TMP_END;
-
-   /* didn't get the right number of digits, shift */
-   if (i) {
-      digits -= i;
-      for (j = 0; j < digits; j++)
-         str[j] = str[j + i];
-   }
-   str[digits] = '\0';
+   str[digits - i] = '\0';
 
    return str;
 }
