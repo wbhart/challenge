@@ -33,6 +33,7 @@
 
 **********************************************************************/
 
+/* w.b. hart */
 void zz_init(zz_ptr r)
 {
    r->n = NULL;
@@ -40,11 +41,13 @@ void zz_init(zz_ptr r)
    r->alloc = 0;
 }
 
+/* w.b. hart */
 void zz_clear(zz_ptr r)
 {
    free(r->n);
 }
 
+/* w.b. hart */
 void zz_fit(zz_ptr r, long m)
 {
    if (r->alloc < m) {
@@ -53,6 +56,7 @@ void zz_fit(zz_ptr r, long m)
    }
 }
 
+/* w.b. hart */
 void zz_normalise(zz_ptr r)
 {
    if (r->size < 0)
@@ -67,6 +71,7 @@ void zz_normalise(zz_ptr r)
 
 **********************************************************************/
 
+/* w.b. hart */
 void zz_set_1(zz_ptr r, long c)
 {
    if (c) {
@@ -77,6 +82,7 @@ void zz_set_1(zz_ptr r, long c)
       r->size = 0;
 }
 
+/* w.b. hart */
 int zz_equal_1(zz_srcptr r, long c)
 {
    if (c == 0)
@@ -87,6 +93,7 @@ int zz_equal_1(zz_srcptr r, long c)
       return r->size == -1 && r->n[0] == -c;
 }
 
+/* w.b. hart */
 int zz_cmp(zz_srcptr a, zz_srcptr b)
 {
    long asize = a->size;
@@ -102,6 +109,7 @@ int zz_cmp(zz_srcptr a, zz_srcptr b)
    return asize < 0 ? -sgn : sgn;
 }
 
+/* w.b. hart */
 int zz_is_zero(zz_srcptr r)
 {
    return r->size == 0;
@@ -113,6 +121,7 @@ int zz_is_zero(zz_srcptr r)
 
 **********************************************************************/
 
+/* w.b. hart */
 void zz_randbits(zz_ptr a, rand_t state, long bits)
 {
    long ubits = ABS(bits);
@@ -132,6 +141,7 @@ void zz_randbits(zz_ptr a, rand_t state, long bits)
 
 **********************************************************************/
 
+/* w.b. hart */
 void zz_copy(zz_ptr a, zz_srcptr b)
 {
    long usize = ABS(b->size);
@@ -143,6 +153,7 @@ void zz_copy(zz_ptr a, zz_srcptr b)
    }
 }
 
+/* w.b. hart */
 void zz_swap(zz_ptr a, zz_ptr b)
 {
    nn_swap(a->n, b->n);
@@ -150,11 +161,13 @@ void zz_swap(zz_ptr a, zz_ptr b)
    SWAP(a->alloc, b->alloc);
 }
 
+/* w.b. hart */
 void zz_zero(zz_ptr a)
 {
    a->size = 0;
 }
 
+/* w.b. hart */
 void zz_add(zz_ptr r, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -183,6 +196,7 @@ void zz_add(zz_ptr r, zz_srcptr a, zz_srcptr b)
    zz_normalise(r);
 }
 
+/* w.b. hart */
 void zz_sub(zz_ptr r, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -214,6 +228,7 @@ void zz_sub(zz_ptr r, zz_srcptr a, zz_srcptr b)
    if (sign) r->size = -r->size;
 }
 
+/* w.b. hart */
 void zz_add_1(zz_ptr r, zz_srcptr a, word_t c)
 {
    long usize = ABS(a->size);
@@ -229,6 +244,7 @@ void zz_add_1(zz_ptr r, zz_srcptr a, word_t c)
    }
 }
 
+/* w.b. hart */
 void zz_sub_1(zz_ptr r, zz_srcptr a, word_t c)
 {
    long usize = ABS(a->size);
@@ -249,6 +265,7 @@ void zz_sub_1(zz_ptr r, zz_srcptr a, word_t c)
    }
 }
 
+/* w.b. hart */
 void zz_mul_2exp(zz_ptr r, zz_srcptr a, long exp)
 {
    int bits = exp & (WORD_BITS - 1);
@@ -270,6 +287,7 @@ void zz_mul_2exp(zz_ptr r, zz_srcptr a, long exp)
    r->size = a->size >= 0 ? rsize : -rsize;
 }
 
+/* w.b. hart */
 void zz_div_2exp(zz_ptr r, zz_srcptr a, long exp)
 {
    int bits = exp & (WORD_BITS - 1);
@@ -293,6 +311,7 @@ void zz_div_2exp(zz_ptr r, zz_srcptr a, long exp)
    }
 }
 
+/* w.b. hart */
 void zz_neg(zz_ptr r, zz_srcptr a)
 {
    if (r != a) {
@@ -305,6 +324,7 @@ void zz_neg(zz_ptr r, zz_srcptr a)
    r->size = -a->size;
 }
 
+/* w.b. hart */
 void zz_mul_1(zz_ptr r, zz_srcptr a, word_t c)
 {
    long usize = ABS(a->size);
@@ -328,6 +348,7 @@ void zz_mul_1(zz_ptr r, zz_srcptr a, word_t c)
 
 **********************************************************************/
 
+/* w.b. hart */
 void zz_mul(zz_ptr r, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -348,6 +369,7 @@ void zz_mul(zz_ptr r, zz_srcptr a, zz_srcptr b)
    }
 }
 
+/* w.b. hart */
 void zz_divrem(zz_ptr q, zz_t r, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -377,6 +399,7 @@ void zz_divrem(zz_ptr q, zz_t r, zz_srcptr a, zz_srcptr b)
    }
 }
 
+/* w.b. hart */
 void zz_div(zz_ptr q, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -410,6 +433,7 @@ void zz_div(zz_ptr q, zz_srcptr a, zz_srcptr b)
    }
 }
 
+/* w.b. hart */
 void zz_gcd(zz_ptr g, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -448,6 +472,7 @@ void zz_gcd(zz_ptr g, zz_srcptr a, zz_srcptr b)
 
 **********************************************************************/
 
+/* w.b. hart */
 char * zz_get_str(zz_srcptr a)
 {
    nn_t t;

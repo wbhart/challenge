@@ -29,5 +29,17 @@ The idea is to implement mathematical operations following a strict set of rules
 
 * All generic algorithms should be implemented in C++.
 
+The challenge is to come up with any of the following:
+
+* Implementations of new mathematical operations not already in CAS Challenge
+
+* Algorithms with a better complexity than those already implemented
+
+* Substantially faster version of a function within the space limit
+
+* New implementation of an existing function in less space
+
+If you develop such things, put them in and place your name as a comment above each function you implemented (in the .c or .cpp file).
+
 William Hart 2013.
 

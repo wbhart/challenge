@@ -26,16 +26,19 @@
 
 #include "ZZ.h"
 
+/* w.b. hart */
 int ZZ_t::operator==(const ZZ_t& b)
 {
    return zz_cmp(this, &b) == 0;
 }
 
+/* w.b. hart */
 int ZZ_t::operator==(long z)
 {
    return zz_equal_1(this, z);
 }
 
+/* w.b. hart */
 ZZ_t ZZ_t::operator-()
 {
    ZZ_t r;
@@ -45,6 +48,7 @@ ZZ_t ZZ_t::operator-()
    return r;
 }
 
+/* w.b. hart */
 ZZ_t ZZ_t::operator+(const ZZ_t& b)
 {
    ZZ_t r;
@@ -54,6 +58,7 @@ ZZ_t ZZ_t::operator+(const ZZ_t& b)
    return r;
 }
 
+/* w.b. hart */
 ZZ_t ZZ_t::operator-(const ZZ_t& b)
 {
    ZZ_t r;
@@ -63,6 +68,7 @@ ZZ_t ZZ_t::operator-(const ZZ_t& b)
    return r;
 }
 
+/* w.b. hart */
 ZZ_t ZZ_t::operator*(long b)
 {
    ZZ_t r;
@@ -72,6 +78,7 @@ ZZ_t ZZ_t::operator*(long b)
    return r;
 }
 
+/* w.b. hart */
 ZZ_t ZZ_t::operator*(const ZZ_t& b)
 {
    ZZ_t r;
@@ -81,6 +88,7 @@ ZZ_t ZZ_t::operator*(const ZZ_t& b)
    return r;
 }
 
+/* w.b. hart */
 const ZZ_t ZZ_t::operator*=(const ZZ_t& b)
 {
    ZZ_t r;
@@ -91,6 +99,7 @@ const ZZ_t ZZ_t::operator*=(const ZZ_t& b)
    return r;
 }
 
+/* w.b. hart */
 const ZZ_t ZZ_t::operator*=(long b)
 {
    ZZ_t r;
@@ -101,6 +110,7 @@ const ZZ_t ZZ_t::operator*=(long b)
    return r;
 }
 
+/* w.b. hart */
 ZZ_t ZZ_t::operator/(const ZZ_t& b)
 {
    ZZ_t q;
@@ -112,6 +122,7 @@ ZZ_t ZZ_t::operator/(const ZZ_t& b)
    return q;
 }
 
+/* w.b. hart */
 const ZZ_t ZZ_t::operator/=(const ZZ_t& b)
 {
    ZZ_t q;
@@ -122,6 +133,7 @@ const ZZ_t ZZ_t::operator/=(const ZZ_t& b)
    return q;
 }
 
+/* w.b. hart */
 void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b)
 {
    zz_divrem(&q, &r, &a, &b);
@@ -132,6 +144,7 @@ void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b)
 }
 */
 
+/* w.b. hart */
 ZZ_t gcd(const ZZ_t& a, const ZZ_t& b)
 {
    ZZ_t g;
@@ -141,6 +154,7 @@ ZZ_t gcd(const ZZ_t& a, const ZZ_t& b)
    return g;
 }
 
+/* w.b. hart */
 ostream& operator<<(ostream& os, const ZZ_t& a)
 {
    char * str = zz_get_str(&a);
@@ -154,11 +168,13 @@ ostream& operator<<(ostream& os, const ZZ_t& a)
    return os;
 }
 
+/* w.b. hart */
 void randbits(ZZ_t& r, rand_t state, long bits)
 {
    zz_randbits(&r, state, bits);
 }
 
+/* w.b. hart */
 ZZ_t factorial(long start, long n)
 {
    long i;
@@ -174,6 +190,7 @@ ZZ_t factorial(long start, long n)
    }
 }
 
+/* w.b. hart */
 ZZ_t fac(long n)
 {
    return factorial(1, n);

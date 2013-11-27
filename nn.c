@@ -33,6 +33,7 @@
 
 **********************************************************************/
 
+/* w.b. hart */
 void nn_copyi(nn_t a, nn_src_t b, long m)
 {
    long i;
@@ -41,6 +42,7 @@ void nn_copyi(nn_t a, nn_src_t b, long m)
       a[i] = b[i];
 }
 
+/* w.b. hart */
 void nn_copyd(nn_t a, nn_src_t b, long m)
 {
    long i;
@@ -49,6 +51,7 @@ void nn_copyd(nn_t a, nn_src_t b, long m)
       a[i] = b[i];
 }
 
+/* w.b. hart */
 void nn_zero(nn_t a, long m)
 {
    long i;
@@ -57,6 +60,7 @@ void nn_zero(nn_t a, long m)
       a[i] = 0;
 }
 
+/* w.b. hart */
 long nn_normalise(nn_t a, long m)
 {
    while ((m != 0) && (a[m - 1] == 0))
@@ -65,6 +69,7 @@ long nn_normalise(nn_t a, long m)
    return m;
 }
 
+/* w.b. hart */
 word_t nn_add_m(nn_t a, nn_src_t b, nn_src_t c, long m, word_t ci)
 {
    dword_t t;
@@ -79,6 +84,7 @@ word_t nn_add_m(nn_t a, nn_src_t b, nn_src_t c, long m, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 word_t nn_sub_m(nn_t a, nn_src_t b, nn_src_t c, long m, word_t bi)
 {
    dword_t t;
@@ -93,6 +99,7 @@ word_t nn_sub_m(nn_t a, nn_src_t b, nn_src_t c, long m, word_t bi)
    return bi;
 }
 
+/* w.b. hart */
 word_t nn_add_1(nn_t a, nn_src_t b, long m, word_t ci)
 {
    dword_t t;
@@ -111,6 +118,7 @@ word_t nn_add_1(nn_t a, nn_src_t b, long m, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 word_t nn_sub_1(nn_t a, nn_src_t b, long m, word_t ci)
 {
    dword_t t;
@@ -129,6 +137,7 @@ word_t nn_sub_1(nn_t a, nn_src_t b, long m, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 word_t nn_add(nn_t a, nn_src_t b, long m, nn_src_t c, long n, word_t ci)
 {
    ci = nn_add_m(a, b, c, n, ci);
@@ -136,6 +145,7 @@ word_t nn_add(nn_t a, nn_src_t b, long m, nn_src_t c, long n, word_t ci)
    return nn_add_1(a + n, b + n, m - n, ci);
 }
 
+/* w.b. hart */
 word_t nn_sub(nn_t a, nn_src_t b, long m, nn_src_t c, long n, word_t bi)
 {
    bi = nn_sub_m(a, b, c, n, bi);
@@ -143,6 +153,7 @@ word_t nn_sub(nn_t a, nn_src_t b, long m, nn_src_t c, long n, word_t bi)
    return nn_sub_1(a + n, b + n, m - n, bi);
 }
 
+/* w.b. hart */
 word_t nn_shl(nn_t a, nn_src_t b, long m, int bits, word_t ci)
 {
    dword_t t;
@@ -157,6 +168,7 @@ word_t nn_shl(nn_t a, nn_src_t b, long m, int bits, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 word_t nn_shr(nn_t a, nn_src_t b, long m, int bits, word_t ci)
 {
    dword_t t;
@@ -173,6 +185,7 @@ word_t nn_shr(nn_t a, nn_src_t b, long m, int bits, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 int nn_cmp(nn_t a, nn_src_t b, long m)
 {
    while (m--) {
@@ -187,6 +200,7 @@ int nn_cmp(nn_t a, nn_src_t b, long m)
    return 0;
 }
 
+/* w.b. hart */
 word_t nn_neg(nn_t a, nn_src_t b, long m, word_t ci)
 {
    dword_t t;
@@ -208,6 +222,7 @@ word_t nn_neg(nn_t a, nn_src_t b, long m, word_t ci)
    return (word_t) 1 - ci;
 }
 
+/* w.b. hart */
 word_t nn_mul_1(nn_t a, nn_src_t b, long m, word_t c, word_t ci)
 {
    dword_t t;
@@ -222,6 +237,7 @@ word_t nn_mul_1(nn_t a, nn_src_t b, long m, word_t c, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 word_t nn_addmul_1(nn_t a, nn_src_t b, long m, word_t c, word_t ci)
 {
    dword_t t;
@@ -236,6 +252,7 @@ word_t nn_addmul_1(nn_t a, nn_src_t b, long m, word_t c, word_t ci)
    return ci;
 }
 
+/* w.b. hart */
 word_t nn_submul_1(nn_t a, nn_src_t b, long m, word_t c, word_t bi)
 {
    dword_t t;
@@ -250,6 +267,7 @@ word_t nn_submul_1(nn_t a, nn_src_t b, long m, word_t c, word_t bi)
    return bi;
 }
 
+/* w.b. hart */
 word_t nn_divrem_1(nn_t q, nn_t a, long m, word_t n, word_t ci)
 {
    long i;
@@ -268,6 +286,7 @@ word_t nn_divrem_1(nn_t q, nn_t a, long m, word_t n, word_t ci)
 
 **********************************************************************/
 
+/* w.b. hart */
 void nn_randbits(nn_t a, rand_t state, long bits)
 {
    long b = bits % WORD_BITS;
@@ -287,6 +306,7 @@ void nn_randbits(nn_t a, rand_t state, long bits)
 
 **********************************************************************/
 
+/* w.b. hart */
 void nn_mul_classical(nn_t r, nn_src_t a, long m, nn_src_t b, long n)
 {
    long i;
@@ -298,6 +318,7 @@ void nn_mul_classical(nn_t r, nn_src_t a, long m, nn_src_t b, long n)
       r[m + i] = nn_addmul_1(r + i, a, m, b[i], 0);
 }
 
+/* w.b. hart */
 void nn_mul(nn_t p, nn_src_t a, long m, nn_src_t b, long n)
 {
    long r;
@@ -331,6 +352,7 @@ void nn_mul(nn_t p, nn_src_t a, long m, nn_src_t b, long n)
    TMP_END;
 }
 
+/* w.b. hart */
 word_t nn_divrem_classical(nn_t q, nn_t a, long m, nn_src_t d, long n, word_t ci)
 {
    long i = m - 1, j = m - n;
@@ -362,6 +384,7 @@ word_t nn_divrem_classical(nn_t q, nn_t a, long m, nn_src_t d, long n, word_t ci
    return hi;
 }
 
+/* w.b. hart */
 void nn_divrem(nn_t q, nn_t a, long m, nn_src_t d, long n)
 {
    long norm = n_leading_zeroes(d[n - 1]);
@@ -389,6 +412,7 @@ void nn_divrem(nn_t q, nn_t a, long m, nn_src_t d, long n)
    }
 }
 
+/* w.b. hart */
 void nn_div(nn_t q, nn_t a, long m, nn_src_t d, long n)
 {
    long s = m - n + 1;
@@ -422,6 +446,7 @@ void nn_div(nn_t q, nn_t a, long m, nn_src_t d, long n)
    }
 }
 
+/* w.b. hart */
 long nn_gcd(nn_t g, nn_t a, long m, nn_t b, long n)
 {
    nn_t q;
@@ -452,6 +477,7 @@ long nn_gcd(nn_t g, nn_t a, long m, nn_t b, long n)
 
 **********************************************************************/
 
+/* w.b. hart */
 void nn_mul_kara(nn_t p, nn_src_t a, long m, nn_src_t b, long n)
 {
    long m2 = (m + 1)/2;
@@ -486,6 +512,7 @@ void nn_mul_kara(nn_t p, nn_src_t a, long m, nn_src_t b, long n)
 
 **********************************************************************/
 
+/* w.b. hart */
 char * nn_get_str(nn_t a, long m)
 {
    /* 9.63... is log_10(2^32) */
@@ -526,6 +553,7 @@ char * nn_get_str(nn_t a, long m)
    return str;
 }
 
+/* w.b. hart */
 long nn_set_str(nn_t a, const char * str)
 {
    long i, m = 1, digits = strlen(str);
