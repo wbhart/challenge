@@ -48,8 +48,6 @@
       (q) = __u / (n);                                                    \
    } while (0)
 
-word_t n_preinv(word_t n);
-
 word_t n_randword(rand_t state);
 
 word_t n_randint(rand_t state, word_t limit);
