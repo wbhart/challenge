@@ -1,0 +1,25 @@
+CAS Challenge
+=============
+
+This is a mathematical coding challenge.
+
+The idea is to implement mathematical operations following a strict set of rules:
+
+* No implementation of an algorithm may consume more than 40 lines, excluding comment and blank lines.
+
+* No two algorithms for computing the same mathematical operation may have the same complexity.
+
+* An additional top-level function which selects between various algorithms for a given operation may be present, but must also not exceed 40 lines.
+
+* All functions must implement recognised mathematical operations and be generally useful.
+
+* Macros of up to two lines are allowed, but must be generally useful.
+
+* All non-generic code must be implemented in pure C with no external libraries.
+
+* Each C module may have a C++ class and wrapper associated with it. There is no limit on the size of the class declaration.
+
+* All generic algorithms should be implemented in C++.
+
+William Hart 2013.
+
