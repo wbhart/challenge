@@ -17,6 +17,8 @@ The idea is to implement mathematical operations following a strict set of rules
 
 * No line of code may exceed 80 characters.
 
+* All code should be readable, commented and well spaced out (remember blank and comment lines are not counted in the total).
+
 * Macros of up to 7 lines are allowed, but must be generally useful.
 
 * All non-generic code must be implemented in pure C with no external libraries.
