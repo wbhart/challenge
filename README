@@ -15,6 +15,8 @@ The idea is to implement mathematical operations following a strict set of rules
 
 * No line of code should contain more than one complete C statement.
 
+* No line of code may exceed 80 characters.
+
 * Macros of up to 7 lines are allowed, but must be generally useful.
 
 * All non-generic code must be implemented in pure C with no external libraries.
