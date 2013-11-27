@@ -113,5 +113,7 @@ ostream& operator<<(ostream& os, const ZZ_t& z);
 
 ZZ_t fac(long n);
 
+ZZ_t fib(unsigned long n);
+
 #endif
 
