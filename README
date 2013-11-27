@@ -13,6 +13,8 @@ The idea is to implement mathematical operations following a strict set of rules
 
 * All functions must implement recognised mathematical operations and be generally useful.
 
+* The implementations should not be unduly inefficient.
+
 * No line of code should contain more than one complete C statement.
 
 * No line of code may exceed 80 characters.
