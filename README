@@ -5,7 +5,7 @@ This is a mathematical coding challenge.
 
 The idea is to implement mathematical operations following a strict set of rules:
 
-* No implementation of an algorithm may consume more than 40 lines, excluding comment and blank lines.
+* No implementation of an algorithm may consume more than 30 lines (excluding comment and blank lines, which are not counted).
 
 * No two algorithms for computing the same mathematical operation may have the same complexity.
 
