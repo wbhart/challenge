@@ -195,3 +195,39 @@ ZZ_t fac(long n)
 {
    return factorial(1, n);
 }
+
+/* f. johansson (takahashi's algorithm, requires n > 2) */
+ZZ_t fib_takahashi(unsigned long n)
+{
+    ZZ_t a, b, c;
+    long i, sign;
+    sign = -1;
+    a = b = 1;
+    for (i = n_bitcount(n) - 2; i > 0; i--)
+    {
+        c = a*a;
+        a = (a+b) / 2;
+        a = (a*a)*2 - c*3 - 2*sign;
+        b = c*5 + 2*sign;
+        sign = 1;
+        if (n & (1UL << i)) {
+            c = a;
+            a = (a+b) / 2;
+            b = a+c+c;
+            sign = -1;
+        }
+    }
+    if (n & 1)
+        return ((a + b) / 2) * b - sign;
+    else
+        return a * b;
+}
+
+ZZ_t fib(unsigned long n)
+{
+    if (n <= 2)
+        return ZZ_t((long) (n - (n == 2)));
+    else
+        return fib_takahashi(n);
+}
+

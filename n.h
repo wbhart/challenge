@@ -54,6 +54,8 @@ word_t n_randint(rand_t state, word_t limit);
 
 word_t n_randbits(rand_t state, unsigned int bits);
 
+word_t n_bitcount(word_t n);
+
 #ifdef __cplusplus
  }
 #endif

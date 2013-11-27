@@ -66,3 +66,12 @@ word_t n_randbits(rand_t state, unsigned int bits)
    else return (1UL << (bits - 1)) | n_randint(state, 
                                     (bits == WORD_BITS ? 0 : 1UL << bits));
 }
+
+word_t n_bitcount(word_t n)
+{
+    if (n == 0)
+        return 0;
+    else
+        return WORD_BITS - n_leading_zeroes(n);
+}
+

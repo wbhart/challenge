@@ -121,6 +121,24 @@ void test_gcd(rand_t state)
    cout << "PASS" << endl;
 }
 
+void test_fib(rand_t state)
+{
+   ZZ_t a, b, c;
+   long i;
+
+   cout << "fib... ";
+
+   for (i = 0; i < 500; i++)
+   {
+        a = fib(i);
+        b = fib(i+1);
+        c = fib(i+2);
+        assert (a + b == c);
+   }
+
+   cout << "PASS" << endl;
+}
+
 int main(void)
 {
    rand_t state;
@@ -130,6 +148,7 @@ int main(void)
    test_muldiv(state);
    test_divdivrem(state);
    test_gcd(state);
-      
+   test_fib(state);
+
    return 0;
 }
