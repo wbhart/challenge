@@ -44,6 +44,9 @@ public:
 
    Poly(const char * str);
 
+   int operator==(long c);
+   int operator!=(long c) { return !(*this == c); }
+
    int operator==(const Poly<T>& b);
    int operator!=(const Poly<T>& b) { return !(*this == b); }
 
@@ -67,6 +70,8 @@ long set_str(Poly<T>& a, const char * str)
       i += set_str(a[j], str + i);
       i += strspn(str + i, " \t\n\r");
    }
+
+   normalise(a);
 }
 
 /* w.b. hart */
@@ -74,6 +79,14 @@ template <class T>
 Poly<T>::Poly(const char * str)
 {
    set_str(*this, str);
+}
+
+/* w.b. hart */
+template <class T>
+void normalise(Poly<T>& a)
+{
+   while (!a.empty() && a.back() == 0)
+      a.pop_back();
 }
 
 /* w.b. hart */
@@ -92,6 +105,16 @@ int Poly<T>::operator==(const Poly<T>& b)
    }
 
    return 1;
+}
+   
+/* w.b. hart */
+template <class T>
+int Poly<T>::operator==(long c)
+{
+   if (c == 0)
+      return (*this).size() == 0;
+
+   return (*this).size() == 1 && (*this)[0] == c;
 }
    
 /* w.b. hart */
@@ -124,6 +147,8 @@ void random(Poly<T>& r, rand_t state, va_list dims)
       random(r[i], state, args);
       va_end(args);
    }
+
+   normalise(r);
 }
 
 template <class T>
@@ -159,6 +184,8 @@ Poly<T> Poly<T>::operator+(const Poly<T>& b)
    for ( ; i < len2; i++)
       r[i] = b[i];
 
+   normalise(r);
+
    return r;
 }
 
@@ -182,6 +209,8 @@ Poly<T> Poly<T>::operator-(const Poly<T>& b)
 
    for ( ; i < len2; i++)
       r[i] = -b[i];
+
+   normalise(r);
 
    return r;
 }
