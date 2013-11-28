@@ -89,6 +89,17 @@ ZZ_t ZZ_t::operator*(const ZZ_t& b)
 }
 
 /* w.b. hart */
+const ZZ_t ZZ_t::operator+=(const ZZ_t& b)
+{
+   ZZ_t r;
+
+   zz_add(&r, this, &b);
+   zz_copy(this, &r);
+
+   return r;
+}
+
+/* w.b. hart */
 const ZZ_t ZZ_t::operator*=(const ZZ_t& b)
 {
    ZZ_t r;

@@ -99,6 +99,7 @@ public:
    ZZ_t operator*(long b);
    ZZ_t operator/(const ZZ_t& b);
    
+   const ZZ_t operator+=(const ZZ_t& b);
    const ZZ_t operator*=(long b);
    const ZZ_t operator*=(const ZZ_t& b);
    const ZZ_t operator/=(const ZZ_t& b);

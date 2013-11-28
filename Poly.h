@@ -54,6 +54,9 @@ public:
 
    Poly<T> operator+(const Poly<T>& b);
    Poly<T> operator-(const Poly<T>& b);
+   Poly<T> operator*(const Poly<T>& b);
+
+   const Poly<T> operator+=(const Poly<T>& b);
 };
 
 /* w.b. hart */
@@ -212,6 +215,46 @@ Poly<T> Poly<T>::operator-(const Poly<T>& b)
 
    normalise(r);
 
+   return r;
+}
+
+/* w.b. hart */
+template <class T>
+Poly<T> Poly<T>::operator*(const Poly<T>& b)
+{
+   Poly<T> r;
+   long len1 = this->size();
+   long len2 = b.size(), i, j;
+   long rlen = len1 + len2;
+
+   if (len1 == 0 || len2 == 0)
+      return r;
+
+   r.resize(rlen);
+
+   for (i = 0; i < len1; i++)
+      r[i] = (*this)[i]*b[0];
+
+   for (j = 1; j < len2; j++)
+      r[len1 + j - 1] = (*this)[len1 - 1]*b[j];
+
+   for (i = 0; i < len1 - 1; i++)
+      for (j = 1; j < len2; j++)
+         r[i + j] += (*this)[i]*b[j];
+
+   normalise(r);
+
+   return r;
+}
+
+/* w.b. hart */
+template <class T>
+const Poly<T> Poly<T>::operator+=(const Poly<T>& b)
+{
+   Poly<T> r;
+
+   r = (*this) + b;
+   (*this) = r;
    return r;
 }
 
