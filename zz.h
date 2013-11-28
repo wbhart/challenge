@@ -150,6 +150,8 @@ void zz_gcd(zz_ptr q, zz_srcptr a, zz_srcptr b);
 
 char * zz_get_str(zz_srcptr a);
 
+long zz_set_str(zz_t a, const char * str);
+
 #ifdef __cplusplus
  }
 #endif

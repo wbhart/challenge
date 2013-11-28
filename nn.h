@@ -103,7 +103,7 @@ void nn_mul_kara(nn_t p, nn_src_t a, long m, nn_src_t b, long n);
 
 char * nn_get_str(nn_t a, long m);
 
-long nn_set_str(nn_t a, const char * str);
+long nn_set_str(nn_t a, long * len, const char * str);
 
 #ifdef __cplusplus
  }

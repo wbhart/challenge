@@ -109,6 +109,8 @@ void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b);
 
 ZZ_t gcd(const ZZ_t & a, const ZZ_t & b);
 
+long set_str(ZZ_t& a, const char * str);
+
 ostream& operator<<(ostream& os, const ZZ_t& z);
 
 ZZ_t fac(long n);

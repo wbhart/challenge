@@ -554,9 +554,9 @@ char * nn_get_str(nn_t a, long m)
 }
 
 /* w.b. hart */
-long nn_set_str(nn_t a, const char * str)
+long nn_set_str(nn_t a, long * len, const char * str)
 {
-   long i, m = 1, digits = strlen(str);
+   long i, m = 1, digits = strspn(str, "0123456789");
    word_t ci;
 
    if (digits == 1 && str[0] == '0')
@@ -569,5 +569,6 @@ long nn_set_str(nn_t a, const char * str)
       if (ci) a[m++] = ci;
    }
 
-   return m;
+   *len = m;
+   return digits;
 }

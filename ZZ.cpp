@@ -139,10 +139,18 @@ void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b)
    zz_divrem(&q, &r, &a, &b);
 }
 
-/*ZZ_t::ZZ_t(const char * str)
+/* w.b. hart */
+ZZ_t::ZZ_t(const char * str)
 {
+   zz_init(this);
+   zz_set_str(this, str);
 }
-*/
+
+/* w.b. hart */
+long set_str(ZZ_t& a, const char * str)
+{
+   zz_set_str(&a, str);
+}
 
 /* w.b. hart */
 ZZ_t gcd(const ZZ_t& a, const ZZ_t& b)

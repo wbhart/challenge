@@ -492,3 +492,27 @@ char * zz_get_str(zz_srcptr a)
 
    return str;
 }
+
+/* w.b. hart */
+long zz_set_str(zz_t a, const char * str)
+{
+   int sgn = 0;
+   long size, digits;
+   
+   if (str[0] == '-') {
+      sgn = 1;
+      str++;
+   }
+
+   digits = strspn(str, "0123456789");
+   
+   /* 0.0519... is log_{2^64}(10) */
+   size = ceil(0.0519051265 * digits * (64/WORD_BITS));
+   zz_fit(a, size);
+
+   digits = nn_set_str(a->n, &size, str);
+
+   a->size = sgn ? -size : size;
+
+   return digits + sgn;
+}
