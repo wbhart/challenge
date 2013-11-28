@@ -90,7 +90,7 @@ public:
    int operator==(const ZZ_t& b);
    int operator!=(const ZZ_t& b) { return !(*this == b); }
 
-   ZZ_t operator-();
+   ZZ_t const operator-() const;
    
    ZZ_t operator+(const ZZ_t& b);
    ZZ_t operator-(const ZZ_t& b);
@@ -104,6 +104,8 @@ public:
 };
 
 void randbits(ZZ_t& r, rand_t state, long bits);
+
+void random(ZZ_t& r, rand_t state, long bits[]);
 
 void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b);
 

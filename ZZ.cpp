@@ -39,7 +39,7 @@ int ZZ_t::operator==(long z)
 }
 
 /* w.b. hart */
-ZZ_t ZZ_t::operator-()
+ZZ_t const ZZ_t::operator-() const
 {
    ZZ_t r;
 
@@ -180,6 +180,12 @@ ostream& operator<<(ostream& os, const ZZ_t& a)
 void randbits(ZZ_t& r, rand_t state, long bits)
 {
    zz_randbits(&r, state, bits);
+}
+
+/* w.b. hart */
+void random(ZZ_t& r, rand_t state, long bits[])
+{
+   zz_randbits(&r, state, bits[0]);
 }
 
 /* w.b. hart */
