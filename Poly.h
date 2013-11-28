@@ -111,14 +111,31 @@ Poly<T> Poly<T>::operator-() const
 
 /* w.b. hart */
 template <class T>
-void random(Poly<T>& r, rand_t state, long len[])
+void random(Poly<T>& r, rand_t state, va_list dims)
 {
-   long i;
-   
-   r.resize(len[0]);
+   long i, len = va_arg(dims, long);
+   va_list args;
 
-   for (i = 0; i < len[0]; i++)
-      random(r[i], state, len + 1);
+   r.resize(len);
+
+   for (i = 0; i < len; i++)
+   {
+      va_copy(args, dims);
+      random(r[i], state, args);
+      va_end(args);
+   }
+}
+
+template <class T>
+void random(Poly<T>& r, rand_t state, ...)
+{
+   va_list args;
+
+   va_start(args, state);
+
+   random(r, state, args);
+      
+   va_end(args);
 }
 
 /* w.b. hart */

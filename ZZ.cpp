@@ -183,9 +183,11 @@ void randbits(ZZ_t& r, rand_t state, long bits)
 }
 
 /* w.b. hart */
-void random(ZZ_t& r, rand_t state, long bits[])
+void random(ZZ_t& r, rand_t state, va_list args)
 {
-   zz_randbits(&r, state, bits[0]);
+   long bits = va_arg(args, long);
+
+   zz_randbits(&r, state, bits);
 }
 
 /* w.b. hart */

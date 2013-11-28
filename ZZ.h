@@ -25,6 +25,7 @@
 */
 
 #include <cstdlib>
+#include <cstdarg>
 #include <iostream>
 #include <vector>
 
@@ -105,7 +106,7 @@ public:
 
 void randbits(ZZ_t& r, rand_t state, long bits);
 
-void random(ZZ_t& r, rand_t state, long bits[]);
+void random(ZZ_t& r, rand_t state, va_list args);
 
 void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b);
 

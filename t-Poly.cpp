@@ -31,7 +31,7 @@
 void test_addsub(rand_t state)
 {
    Poly<ZZ_t> a1, b1, c1;
-   Poly<Poly<ZZ_t>> a2, b2, c2;
+   Poly<Poly<Poly<ZZ_t>>> a2, b2, c2;
    long dims1[] = {5, -12};
    long dims2[] = {5, 4, -12};
    long i;
@@ -39,8 +39,8 @@ void test_addsub(rand_t state)
    cout << "add/sub... ";
 
    for (i = 0; i < 10000; i++) {
-      random(a1, state, dims1);
-      random(b1, state, dims1);
+      random(a1, state, 5, -12L);
+      random(b1, state, 5, -12L);
 
       c1 = a1 + b1;
       c1 = c1 - b1;
@@ -49,8 +49,8 @@ void test_addsub(rand_t state)
    }
 
    for (i = 0; i < 10000; i++) {
-      random(a2, state, dims2);
-      random(b2, state, dims2);
+      random(a2, state, 5, 4, 3, -12L);
+      random(b2, state, 5, 4, 3, -12L);
 
       c2 = a2 + b2;
       c2 = c2 - b2;
