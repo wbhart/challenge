@@ -43,6 +43,8 @@ If you develop such things, put them in and place your name as a comment above e
 
 If your implementation is better than what is there, replace the existing implementation with your own and add your name above it. We'll eventually have a script which keeps score.
 
+Feel free to make minor improvements to existing implementations, but not at the expense of speed, clarity or visual appeal. Naturally, minor modifications don't earn points.
+
 There's a Google Group called cas-challenge here:
 
 https://groups.google.com/forum/#!forum/cas-challenge
