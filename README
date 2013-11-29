@@ -41,5 +41,13 @@ The challenge is to come up with any of the following:
 
 If you develop such things, put them in and place your name as a comment above each function you implemented (in the .c or .cpp file).
 
+If your implementation is better than what is there, replace the existing implementation with your own and add your name above it. We'll eventually have a script which keeps score.
+
+There's a Google Group called cas-challenge here:
+
+https://groups.google.com/forum/#!forum/cas-challenge
+
+Have fun!
+
 William Hart 2013.
 
