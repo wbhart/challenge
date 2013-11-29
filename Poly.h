@@ -154,6 +154,7 @@ void random(Poly<T>& r, rand_t state, va_list dims)
    normalise(r);
 }
 
+/* w.b. hart */
 template <class T>
 void random(Poly<T>& r, rand_t state, ...)
 {
