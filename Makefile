@@ -3,7 +3,7 @@ CC=gcc -g -O2
 INC=
 LIB=
 OBJS=n.o nn.o zz.o ZZ.o Poly.o	
-HEADERS=Poly.h ZZ.h zz.h nn.h n.h common.h
+HEADERS=Poly.hpp ZZ.hpp zz.h nn.h n.h common.h
 TESTS=t-ZZ t-Poly
 
 all: $(OBJS)

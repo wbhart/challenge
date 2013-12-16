@@ -24,7 +24,7 @@
    DAMAGE.
 */
 
-#include "ZZ.h"
+#include "ZZ.hpp"  
 
 /* w.b. hart */
 int ZZ_t::operator==(const ZZ_t& b)
