@@ -435,7 +435,7 @@ void zz_divrem(zz_ptr q, zz_ptr r, zz_srcptr a, zz_srcptr b)
    }
 }
 
-/* w.b. hart */
+/* w.b. hart -- inspired by Peter Luschny's implementation */
 void zz_larem(zz_ptr r, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
@@ -543,6 +543,7 @@ void zz_gcd(zz_ptr g, zz_srcptr a, zz_srcptr b)
    }
 }
 
+/* w.b. hart -- inspired by Peter Luschny's implementation */
 int zz_jacobi(zz_srcptr A, zz_srcptr B)
 {
    int j = 1, res, r8, remb4, remb8;
