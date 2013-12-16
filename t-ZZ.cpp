@@ -121,6 +121,52 @@ void test_gcd(rand_t state)
    cout << "PASS" << endl;
 }
 
+void test_jacobi(rand_t state)
+{
+   ZZ_t a, b, c, d;
+   long i;
+   int j1, j2;
+
+   cout << "jacobi... ";
+
+   for (i = 0; i < 1000; i++) {
+      randbits(a, state, n_randint(state, 1000));
+      do {
+         randbits(b, state, n_randint(state, 1000));
+      } while (is_even(b));
+
+      randbits(c, state, n_randint(state, 1000));
+      
+      j1 = jacobi(a, b);
+      j2 = jacobi(c, b);
+
+      a *= c;
+           
+      assert(jacobi(a, b) == j1*j2);
+   }
+
+   for (i = 0; i < 1000; i++) {
+      randbits(a, state, n_randint(state, 1000));
+      do {
+         randbits(b, state, n_randint(state, 1000));
+      } while (is_even(b));
+
+      do {
+         randbits(d, state, n_randint(state, 1000));
+      } while (is_even(d));
+
+
+      j1 = jacobi(a, b);
+      j2 = jacobi(a, d);
+
+      b *= d;
+           
+      assert(jacobi(a, b) == j1*j2);
+   }
+
+   cout << "PASS" << endl;
+}
+
 void test_fib(rand_t state)
 {
    ZZ_t a, b, c;
@@ -148,6 +194,7 @@ int main(void)
    test_muldiv(state);
    test_divdivrem(state);
    test_gcd(state);
+   test_jacobi(state);
    test_fib(state);
 
    return 0;

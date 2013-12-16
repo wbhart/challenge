@@ -105,6 +105,18 @@ public:
    const ZZ_t operator/=(const ZZ_t& b);
 };
 
+static __inline__
+int is_even(const ZZ_t& a)
+{
+   return a.size == 0 || (a.n[0] % 2) == 0;
+}
+
+static __inline__
+int is_odd(const ZZ_t& a)
+{
+   return a.size != 0 && (a.n[0] % 2) == 1;
+}
+
 void randbits(ZZ_t& r, rand_t state, long bits);
 
 void random(ZZ_t& r, rand_t state, va_list args);
@@ -112,6 +124,8 @@ void random(ZZ_t& r, rand_t state, va_list args);
 void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b);
 
 ZZ_t gcd(const ZZ_t & a, const ZZ_t & b);
+
+int jacobi(const ZZ_t& a, const ZZ_t& b);
 
 long set_str(ZZ_t& a, const char * str);
 

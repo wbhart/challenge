@@ -88,6 +88,10 @@ int zz_equal_1(zz_srcptr r, long c);
 
 int zz_cmp(zz_srcptr a, zz_srcptr b);
 
+int zz_cmp_1(zz_srcptr a, long b);
+
+int zz_cmpabs(zz_srcptr a, zz_srcptr b);
+
 int zz_is_zero(zz_srcptr r);
 
 /**********************************************************************
@@ -138,9 +142,13 @@ void zz_mul(zz_t ptr, zz_srcptr a, zz_srcptr b);
 
 void zz_divrem(zz_ptr q, zz_ptr r, zz_srcptr a, zz_srcptr b);
 
+void zz_larem(zz_ptr r, zz_srcptr a, zz_srcptr b);
+
 void zz_div(zz_ptr q, zz_srcptr a, zz_srcptr b);
 
 void zz_gcd(zz_ptr q, zz_srcptr a, zz_srcptr b);
+
+int zz_jacobi(zz_srcptr A, zz_srcptr B);
 
 /**********************************************************************
  

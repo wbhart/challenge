@@ -174,6 +174,12 @@ ZZ_t gcd(const ZZ_t& a, const ZZ_t& b)
 }
 
 /* w.b. hart */
+int jacobi(const ZZ_t& a, const ZZ_t& b)
+{
+   return zz_jacobi(&a, &b);
+}
+
+/* w.b. hart */
 ostream& operator<<(ostream& os, const ZZ_t& a)
 {
    char * str = zz_get_str(&a);

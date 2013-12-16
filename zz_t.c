@@ -110,6 +110,42 @@ int zz_cmp(zz_srcptr a, zz_srcptr b)
 }
 
 /* w.b. hart */
+int zz_cmp_1(zz_srcptr a, long b)
+{
+   long asize = a->size;
+   long bsize = b == 0 ? 0 : (b > 0 ? 1 : -1);
+   int sgn = asize > 0 ? 1 : -1;
+   long abs = ABS(b);
+
+   if (asize > bsize)
+      return 1;
+   else if (asize < bsize)
+      return -1;
+   else if (asize == 0)
+      return 0;
+
+   if (a->n[0] == abs)
+      return 0;
+   
+   return a->n[0] > abs ? sgn : -sgn;
+ }
+
+/* w.b. hart */
+int zz_cmpabs(zz_srcptr a, zz_srcptr b)
+{
+   long asize = ABS(a->size);
+   long bsize = ABS(b->size);
+   int sgn;
+
+   if (asize > bsize)
+      return 1;
+   else if (asize < bsize)
+      return -1;
+
+   return nn_cmp(a->n, b->n, asize);
+}
+
+/* w.b. hart */
 int zz_is_zero(zz_srcptr r)
 {
    return r->size == 0;
@@ -370,13 +406,13 @@ void zz_mul(zz_ptr r, zz_srcptr a, zz_srcptr b)
 }
 
 /* w.b. hart */
-void zz_divrem(zz_ptr q, zz_t r, zz_srcptr a, zz_srcptr b)
+void zz_divrem(zz_ptr q, zz_ptr r, zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
    long bsize = ABS(b->size);
    long rsize = bsize;
    long qsize = asize - bsize + 1;
-
+   
    zz_copy(r, a);
 
    if (asize < bsize)
@@ -397,6 +433,47 @@ void zz_divrem(zz_ptr q, zz_t r, zz_srcptr a, zz_srcptr b)
          zz_add(r, r, b);
       }
    }
+}
+
+/* w.b. hart */
+void zz_larem(zz_ptr r, zz_srcptr a, zz_srcptr b)
+{
+   long asize = ABS(a->size);
+   long bsize = ABS(b->size);
+   long rsize = bsize;
+   long qsize = asize - bsize + 1;
+   zz_t q, h, t;
+
+   zz_init(t);
+   zz_copy(t, a);
+
+   zz_init(q);
+   zz_init(h);
+   zz_fit(h, asize);
+
+   zz_div_2exp(h, a, 1);
+   if (a->size < 0)
+      zz_add_1(h, h, 1);
+
+   if (asize >= bsize) {
+      zz_fit(q, qsize);
+   
+      nn_divrem(q->n, t->n, asize, b->n, bsize);
+         
+      rsize = nn_normalise(t->n, rsize);
+
+      t->size = a->size >= 0 ? rsize : -rsize;
+
+      if ((a->size ^ b->size) < 0 && t->size != 0 && zz_cmpabs(t, h) >= 0)
+         zz_add(t, t, b);
+      else if (zz_cmpabs(t, h) >= 0)
+         zz_sub(t, t, b);
+   }
+
+   zz_swap(t, r);
+   zz_clear(t);
+   zz_clear(h);
+   zz_clear(q);
 }
 
 /* w.b. hart */
@@ -464,6 +541,50 @@ void zz_gcd(zz_ptr g, zz_srcptr a, zz_srcptr b)
 
       TMP_END;
    }
+}
+
+int zz_jacobi(zz_srcptr A, zz_srcptr B)
+{
+   int j = 1, res, r8, remb4, remb8;
+   zz_t a, b, q;
+   char * str;
+
+   if (zz_is_zero(A))
+      return zz_equal_1(B, 1);
+
+   zz_init(a);
+   zz_init(b);
+   
+   zz_copy(a, A);
+   zz_copy(b, B);
+
+   while  (!zz_is_zero(a)) {
+      remb4 = (b->n[0] % 4) == 3;
+
+      if (a->size < 0) {
+         zz_neg(a, a);
+         j = remb4 ? -j : j;
+      }
+
+      remb8 = ((r8 = (b->n[0] % 8)) == 3 || r8 == 5);
+
+      while ((a->n[0] % 2) == 0) {
+         zz_div_2exp(a, a, 1);
+         if (remb8) j = -j;
+      }
+  
+      j = (a->n[0] % 4) == 3 && remb4 ? -j : j; 
+  
+      zz_larem(b, b, a);
+      zz_swap(a, b);
+   }
+  
+   res = zz_cmp_1(b, 1) > 0 ? 0 : j;
+
+   zz_clear(a);
+   zz_clear(b);
+
+   return res;
 }
 
 /**********************************************************************
