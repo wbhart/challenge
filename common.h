@@ -36,7 +36,11 @@
 #if ULONG_MAX == 4294967295U /* 32 bit unsigned long */
 typedef uint32_t word_t;
 typedef int32_t sword_t;
+#if defined MSC_VER
+typedef long long dword_t;
+#else
 typedef unsigned int dword_t __attribute__((mode(DI)));
+#endif
 #define WORD_BITS 32
 
 #else /* 64 bit unsigned long */
