@@ -25,7 +25,7 @@
 */
 
 #include "common.h"
-#include "n.h"
+#include "word.h"
 
 #ifndef NN_H
 #define NN_H

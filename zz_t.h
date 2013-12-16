@@ -28,8 +28,8 @@
 #define ZZ_H
 
 #include "common.h"
-#include "n.h"
-#include "nn.h"
+#include "word.h"
+#include "nn_t.h"
 
 #ifdef __cplusplus
  extern "C" {

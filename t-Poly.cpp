@@ -25,8 +25,8 @@
 */
 
 #include <cassert>
-#include "ZZ.hpp"
-#include "Poly.hpp"
+#include "ZZ.h"
+#include "Poly.h"
 
 void test_addsub(rand_t state)
 {

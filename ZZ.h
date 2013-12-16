@@ -30,7 +30,7 @@
 #include <vector>
 
 #include "common.h"
-#include "zz.h"
+#include "zz_t.h"
 
 using namespace std;
 

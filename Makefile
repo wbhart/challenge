@@ -2,29 +2,29 @@ CXX=g++ -g -O2 -std=c++11
 CC=gcc -g -O2
 INC=
 LIB=
-OBJS=n.o nn.o zz.o ZZxx.o Polyxx.o	
-HEADERS=Poly.hpp ZZ.hpp zz.h nn.h n.h common.h
+OBJS=word.o nn_t.o zz_t.o ZZ.o Poly.o	
+HEADERS=Poly.h ZZ.h zz_t.h nn_t.h word.h common.h
 TESTS=t-ZZ t-Poly
 
 all: $(OBJS)
 
-ZZxx.o: ZZ.cpp $(HEADERS)
-	$(CXX) -c -o ZZxx.o ZZ.cpp $(INC)
+ZZ.o: ZZ.cpp $(HEADERS)
+	$(CXX) -c -o ZZ.o ZZ.cpp $(INC)
 
-zz.o: zz.c $(HEADERS)
-	$(CC) -c -o zz.o zz.c $(INC)
+zz_t.o: zz_t.c $(HEADERS)
+	$(CC) -c -o zz_t.o zz_t.c $(INC)
 
-nn.o: nn.c $(HEADERS)
-	$(CC) -c -o nn.o nn.c $(INC)
+nn_t.o: nn_t.c $(HEADERS)
+	$(CC) -c -o nn_t.o nn_t.c $(INC)
 
-n.o: n.c $(HEADERS)
-	$(CC) -c -o n.o n.c $(INC)
+word.o: word.c $(HEADERS)
+	$(CC) -c -o word.o word.c $(INC)
 
 t-ZZ: t-ZZ.cpp $(OBJS) $(HEADERS)
 	$(CXX) -o t-ZZ t-ZZ.cpp $(OBJS) $(INC) -lm
 
-Polyxx.o: Poly.cpp $(HEADERS)
-	$(CXX) -c -o Polyxx.o Poly.cpp $(INC)
+Poly.o: Poly.cpp $(HEADERS)
+	$(CXX) -c -o Poly.o Poly.cpp $(INC)
 
 t-Poly: t-Poly.cpp $(OBJS) $(HEADERS)
 	$(CXX) -o t-Poly t-Poly.cpp $(OBJS) $(INC) -lm
