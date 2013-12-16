@@ -33,7 +33,11 @@
  extern "C" {
 #endif
 
+#if defined(__MSC_VER)
+#define n_leading_zeroes __lzcnt
+#else
 #define n_leading_zeroes __builtin_clzl
+#endif
 
 #define n_divrem_21(q, hi, lo, n)                                         \
    do {                                                                   \
