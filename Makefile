@@ -2,14 +2,14 @@ CXX=g++ -g -O2 -std=c++11
 CC=gcc -g -O2
 INC=
 LIB=
-OBJS=n.o nn.o zz.o ZZ.o Poly.o	
+OBJS=n.o nn.o zz.o ZZxx.o Polyxx.o	
 HEADERS=Poly.hpp ZZ.hpp zz.h nn.h n.h common.h
 TESTS=t-ZZ t-Poly
 
 all: $(OBJS)
 
-ZZ.o: ZZ.cpp $(HEADERS)
-	$(CXX) -c -o ZZ.o ZZ.cpp $(INC)
+ZZxx.o: ZZ.cpp $(HEADERS)
+	$(CXX) -c -o ZZxx.o ZZ.cpp $(INC)
 
 zz.o: zz.c $(HEADERS)
 	$(CC) -c -o zz.o zz.c $(INC)
@@ -23,8 +23,8 @@ n.o: n.c $(HEADERS)
 t-ZZ: t-ZZ.cpp $(OBJS) $(HEADERS)
 	$(CXX) -o t-ZZ t-ZZ.cpp $(OBJS) $(INC) -lm
 
-Poly.o: Poly.cpp $(HEADERS)
-	$(CXX) -c -o Poly.o Poly.cpp $(INC)
+Polyxx.o: Poly.cpp $(HEADERS)
+	$(CXX) -c -o Polyxx.o Poly.cpp $(INC)
 
 t-Poly: t-Poly.cpp $(OBJS) $(HEADERS)
 	$(CXX) -o t-Poly t-Poly.cpp $(OBJS) $(INC) -lm
