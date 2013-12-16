@@ -415,10 +415,12 @@ void nn_divrem(nn_t q, nn_t a, long m, nn_src_t d, long n)
 /* w.b. hart */
 void nn_div(nn_t q, nn_t a, long m, nn_src_t d, long n)
 {     
-   if (m - n + 3 >= n)
+   long s = m - n + 1;
+      
+   if (s + 2 >= n)
       nn_divrem(q, a, m, d, n);
    else {
-      long s, norm = n_leading_zeroes(d[n - 1]);
+      long norm = n_leading_zeroes(d[n - 1]), inc = 0;
       nn_t t1, t2, t3;
       TMP_INIT;
 
@@ -427,24 +429,19 @@ void nn_div(nn_t q, nn_t a, long m, nn_src_t d, long n)
       t1 = TMP_ALLOC((m + 1)*sizeof(word_t)); /* new a */
       t3 = TMP_ALLOC(n*sizeof(word_t)); /* new d */
 
-      if (norm) {
-         t1[m] = nn_shl(t1, a, m, norm, 0);
-         nn_shl(t3, d, n, norm, 0);
-      } else {
-         nn_copyi(t1, a, m);
-         nn_copyi(t3, d, n);
-      }
+      t1[m] = nn_shl(t1, a, m, norm, 0);
+      nn_shl(t3, d, n, norm, 0);
+      inc = (t1[m] != 0);
 
-      s = m - n + 1 + (norm != 0);
-      t2 = TMP_ALLOC((s + 1)*sizeof(word_t));
+      t2 = TMP_ALLOC((s + 1 + inc)*sizeof(word_t));
       
-      nn_divrem(t2, t1 + m - 2*s - 1 + (norm != 0), 2*s + 1, t3 + n - s - 1, s + 1);
-      nn_copyi(q, t2 + 1, m - n + 1);
+      nn_divrem(t2, t1 + m - 2*s - 1, 2*s + 1 + inc, t3 + n - s - 1, s + 1);
+      nn_copyi(q, t2 + 1, s);
       
       if (t2[0] == 0) { /* quotient may be one too large */
-         nn_mul(t1, d, n, t2 + 1, m - n + 1);
+         nn_mul(t1, d, n, t2 + 1, s);
          if (nn_sub_m(a, a, t1, n, 0))
-            nn_sub_1(q, t2 + 1, m - n + 1, 1);
+            nn_sub_1(q, t2 + 1, s, 1);
       }
 
       TMP_END;
