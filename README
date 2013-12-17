@@ -27,7 +27,7 @@ The idea is to implement mathematical operations following a strict set of rules
 
 * Each C module may have a C++ class and wrapper associated with it. There is no limit on the size of the class declaration.
 
-* All generic algorithms should be implemented in C++.
+* All generic algorithms should be implemented in C++ and where an underlying C module exists, functions should be pushed down into it where practical, especially if they may be useful by other C algorithms in the module.
 
 The challenge is to come up with any of the following:
 
