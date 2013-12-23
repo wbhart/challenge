@@ -26,9 +26,6 @@
 
 #include <stdlib.h>
 #include "zz_t.h"
-#ifdef _MSC_VER
-#include "malloc.h"
-#endif
 
 /**********************************************************************
  

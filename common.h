@@ -34,7 +34,7 @@
 #include <math.h>
 
 #ifdef _MSC_VER
-#include "malloc.h" /* needed for alloca */
+#include "malloc.h"
 #define ALLOCA _alloca
 #else
 #define ALLOCA alloca
