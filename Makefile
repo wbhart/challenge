@@ -1,5 +1,5 @@
-CXX=g++ -g -O2 -std=c++11
-CC=gcc -g -O2
+CXX=g++ -Wall -g -O2 -std=c++11
+CC=gcc -Wall -g -O2
 INC=
 LIB=
 OBJS=word.o nn_t.o zz_t.o ZZ.o Poly.o	

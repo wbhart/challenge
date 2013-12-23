@@ -75,6 +75,8 @@ long set_str(Poly<T>& a, const char * str)
    }
 
    normalise(a);
+
+   return i;
 }
 
 /* w.b. hart */
