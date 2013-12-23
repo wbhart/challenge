@@ -26,6 +26,9 @@
 
 #include <stdlib.h>
 #include "nn_t.h"
+#ifdef _MSC_VER
+#include "malloc.h"
+#endif
 
 /**********************************************************************
  
@@ -93,7 +96,7 @@ word_t nn_sub_m(nn_t a, nn_src_t b, nn_src_t c, long m, word_t bi)
    for (i = 0; i < m; i++) {
       t = (dword_t) b[i] - (dword_t) c[i] - (dword_t) bi;
       a[i] = (word_t) t;
-      bi = -(t >> WORD_BITS);
+      bi = -(sword_t)(t >> WORD_BITS);
    }
 
    return bi;
@@ -127,7 +130,7 @@ word_t nn_sub_1(nn_t a, nn_src_t b, long m, word_t ci)
    for (i = 0; i < m && ci != 0; i++) {
       t = (dword_t) b[i] - (dword_t) ci;
       a[i] = (word_t) t;
-      ci = -(t >> WORD_BITS);
+      ci = -(sword_t)(t >> WORD_BITS);
    }
 
    if (a != b)
@@ -261,7 +264,7 @@ word_t nn_submul_1(nn_t a, nn_src_t b, long m, word_t c, word_t bi)
    for (i = 0; i < m; i++) {
       t = (dword_t) a[i] - (dword_t) b[i] * (dword_t) c - (dword_t) bi;
       a[i] = (word_t) t;
-      bi = -(t >> WORD_BITS);
+      bi = -(sword_t)(t >> WORD_BITS);
    }
 
    return bi;
@@ -310,7 +313,6 @@ void nn_randbits(nn_t a, rand_t state, long bits)
 void nn_mul_classical(nn_t r, nn_src_t a, long m, nn_src_t b, long n)
 {
    long i;
-   word_t ci = 0;
   
    r[m] = nn_mul_1(r, a, m, b[0], 0); 
    
@@ -500,7 +502,7 @@ void nn_mul_kara(nn_t p, nn_src_t a, long m, nn_src_t b, long n)
    nn_mul(p, a, m2, b, m2);
    nn_mul(p + 2*m2, a + m2, h1, b + m2, h2);
    
-   ci = -nn_sub(t, t, 2*m2 + 1, p, 2*m2, 0);
+   ci = -(sword_t)nn_sub(t, t, 2*m2 + 1, p, 2*m2, 0);
    t[2*m2 + 1] = ci - nn_sub(t, t, 2*m2 + 1, p + 2*m2, h1 + h2, 0);
    
    nn_add(p + m2, p + m2, m + h2, t, 2*m2 + 1, 0);
@@ -519,7 +521,7 @@ char * nn_get_str(nn_t a, long m)
 {
    /* 9.63... is log_10(2^32) */
    long i = 0, j;
-   long digits = ceil(m * 9.632959861247398 * (WORD_BITS/32)) + (m == 0);
+   long digits = (long) ceil(m * 9.632959861247398 * (WORD_BITS/32)) + (m == 0);
    char * str = (char *) malloc(digits + 1);
    word_t ci, d = 10L << (WORD_BITS - 4);
    nn_t q1, q2;

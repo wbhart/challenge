@@ -28,7 +28,7 @@
 #include "ZZ.h"
 #include "Poly.h"
 
-void test_addsub(rand_t state)
+void test_poly_addsub(rand_t state)
 {
    Poly<ZZ_t> a1, b1, c1;
    Poly<Poly<Poly<ZZ_t>>> a2, b2, c2;
@@ -59,7 +59,7 @@ void test_addsub(rand_t state)
    cout << "PASS" << endl;   
 }
 
-void test_mul(rand_t state)
+void test_poly_mul(rand_t state)
 {
    Poly<ZZ_t> a1, b1, c1;
    Poly<Poly<ZZ_t>> a2, b2, c2;
@@ -91,8 +91,8 @@ int main(void)
    rand_t state;
    randinit(state);
 
-   test_addsub(state);
-   test_mul(state);
+   test_poly_addsub(state);
+   test_poly_mul(state);
    
    return 0;
 }

@@ -33,6 +33,12 @@
 #include <limits.h>
 #include <math.h>
 
+#ifdef _MSC_VER
+#define ALLOCA _alloca
+#else
+#define ALLOCA alloca
+#endif
+
 #if ULONG_MAX == 4294967295U /* 32 bit unsigned long */
 typedef uint32_t word_t;
 typedef int32_t sword_t;
@@ -75,7 +81,7 @@ typedef unsigned int dword_t __attribute__((mode(TI)));
 
 #define TMP_ALLOC(size) \
    ((size) > 8192 ? \
-      (nn_t) (__t = (__tmp_t *) alloca(sizeof(__tmp_t)), \
+      (nn_t) (__t = (__tmp_t *) ALLOCA(sizeof(__tmp_t)), \
        __t->next = __tmp_root, \
        __tmp_root = __t, \
        __t->block = (nn_t) malloc(size)) : \

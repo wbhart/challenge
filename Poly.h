@@ -102,7 +102,7 @@ int Poly<T>::operator==(const Poly<T>& b)
    if (len1 != len2)
       return 0;
 
-   for (i = i; i < len1; i++) {
+   for (i = 0; i < len1; i++) {
       if ((*this)[i] != b[i])
          return 0;
    }

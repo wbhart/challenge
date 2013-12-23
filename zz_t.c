@@ -26,6 +26,9 @@
 
 #include <stdlib.h>
 #include "zz_t.h"
+#ifdef _MSC_VER
+#include "malloc.h"
+#endif
 
 /**********************************************************************
  
@@ -127,7 +130,7 @@ int zz_cmp_1(zz_srcptr a, long b)
    if (a->n[0] == abs)
       return 0;
    
-   return a->n[0] > abs ? sgn : -sgn;
+   return (long) a->n[0] > abs ? sgn : -sgn;
  }
 
 /* w.b. hart */
@@ -135,8 +138,7 @@ int zz_cmpabs(zz_srcptr a, zz_srcptr b)
 {
    long asize = ABS(a->size);
    long bsize = ABS(b->size);
-   int sgn;
-
+   
    if (asize > bsize)
       return 1;
    else if (asize < bsize)
@@ -168,7 +170,7 @@ void zz_randbits(zz_ptr a, rand_t state, long bits)
    nn_randbits(a->n, state, ubits);
 
    size = nn_normalise(a->n, size);
-   a->size = bits < 0 & n_randint(state, 2) ? -size : size;
+   a->size = (bits < 0) & n_randint(state, 2) ? -size : size;
 }
 
 /**********************************************************************
@@ -308,8 +310,7 @@ void zz_mul_2exp(zz_ptr r, zz_srcptr a, long exp)
    long words = exp / WORD_BITS;
    long usize = ABS(a->size);
    long rsize;
-   word_t ci;
-
+   
    zz_fit(r, usize + words + (bits != 0));
 
    if (!bits) {
@@ -547,9 +548,8 @@ void zz_gcd(zz_ptr g, zz_srcptr a, zz_srcptr b)
 int zz_jacobi(zz_srcptr A, zz_srcptr B)
 {
    int j = 1, res, r8, remb4, remb8;
-   zz_t a, b, q;
-   char * str;
-
+   zz_t a, b;
+   
    if (zz_is_zero(A))
       return zz_equal_1(B, 1);
 
@@ -629,7 +629,7 @@ long zz_set_str(zz_t a, const char * str)
    digits = strspn(str, "0123456789");
    
    /* 0.0519... is log_{2^64}(10) */
-   size = ceil(0.0519051265 * digits * (64/WORD_BITS));
+   size = (long) ceil(0.0519051265 * digits * (64/WORD_BITS));
    zz_fit(a, size);
 
    digits = nn_set_str(a->n, &size, str);

@@ -105,13 +105,13 @@ public:
    const ZZ_t operator/=(const ZZ_t& b);
 };
 
-static __inline__
+static inline
 int is_even(const ZZ_t& a)
 {
    return a.size == 0 || (a.n[0] % 2) == 0;
 }
 
-static __inline__
+static inline
 int is_odd(const ZZ_t& a)
 {
    return a.size != 0 && (a.n[0] % 2) == 1;

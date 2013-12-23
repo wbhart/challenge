@@ -55,9 +55,9 @@ void test_muldiv(rand_t state)
    cout << "mul/div... ";
 
    for (i = 0; i < 10000; i++) {
-      randbits(a, state, -n_randint(state, 1000));   
+      randbits(a, state, -(long)n_randint(state, 1000));   
       do {
-         randbits(b, state, -n_randint(state, 1000));
+         randbits(b, state, -(long)n_randint(state, 1000));
       } while (b == 0);
 
 
@@ -78,9 +78,9 @@ void test_divdivrem(rand_t state)
    cout << "div/divrem... ";
 
    for (i = 0; i < 10000; i++) {
-      randbits(a, state, -n_randint(state, 1000));
+      randbits(a, state, -(long)n_randint(state, 1000));
       do {
-         randbits(b, state, -n_randint(state, 1000));
+         randbits(b, state, -(long)n_randint(state, 1000));
       } while (b == 0);
 
       ZZ_t q1 = a / b, q2, r2;
@@ -108,7 +108,7 @@ void test_gcd(rand_t state)
          g = gcd(a, b);
       } while (g != 1 && g != -1);
 
-      randbits(c, state, -n_randint(state, 500));
+      randbits(c, state, -(long)n_randint(state, 500));
       
       a = a * c;
       b = b * c;

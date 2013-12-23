@@ -126,8 +126,6 @@ ZZ_t ZZ_t::operator/(const ZZ_t& b)
 {
    ZZ_t q;
 
-   long i;
-
    zz_div(&q, this, &b);
 
    return q;
@@ -160,7 +158,7 @@ ZZ_t::ZZ_t(const char * str)
 /* w.b. hart */
 long set_str(ZZ_t& a, const char * str)
 {
-   zz_set_str(&a, str);
+   return zz_set_str(&a, str);
 }
 
 /* w.b. hart */
