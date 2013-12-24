@@ -33,11 +33,14 @@
 #include <limits.h>
 #include <math.h>
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32)
 #include "malloc.h"
-#define ALLOCA _alloca
 #else
 #include "alloca.h"
+
+#ifdef _MSC_VER
+#define ALLOCA _alloca
+#else
 #define ALLOCA alloca
 #endif
 
