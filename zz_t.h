@@ -150,8 +150,6 @@ void zz_div(zz_ptr q, zz_srcptr a, zz_srcptr b);
 
 void zz_gcd(zz_ptr q, zz_srcptr a, zz_srcptr b);
 
-int zz_jacobi(zz_srcptr A, zz_srcptr B);
-
 /**********************************************************************
  
     Input/output
