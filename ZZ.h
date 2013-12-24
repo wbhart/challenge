@@ -40,21 +40,21 @@ using namespace std;
 class ZZ_t : public zz_struct {
 public:
 
-   ZZ_t(long c) { 
+   explicit ZZ_t(long c) { 
       zz_init(this);
       zz_set_1(this, c);
    }
 
-   ZZ_t(int c)  { 
+   explicit ZZ_t(int c) { 
       zz_init(this);
       zz_set_1(this, c); 
    }
 
-   ZZ_t() {
+   explicit ZZ_t() {
       zz_init(this);
    }
 
-   ZZ_t(const char * str);
+   explicit ZZ_t(const char * str);
 
    ~ZZ_t() { 
       zz_clear(this);
@@ -85,24 +85,39 @@ public:
       return *this;
    }
 
-   int operator==(long c);
-   int operator!=(long c) { return !(*this == c); }
+   int operator==(long b) const;
+   int operator!=(long b) const { return !(*this == b); }
 
    int operator==(const ZZ_t& b);
    int operator!=(const ZZ_t& b) { return !(*this == b); }
 
+   int operator<(const ZZ_t& b) { return zz_cmp(this, &b) < 0; }
+   int operator>(const ZZ_t& b) { return zz_cmp(this, &b) > 0; }
+   int operator<=(const ZZ_t& b) { return zz_cmp(this, &b) <= 0; }
+   int operator>=(const ZZ_t& b) { return zz_cmp(this, &b) >= 0; }
+
+   int operator<(long b) { return zz_cmp_1(this, b) < 0; }
+   int operator>(long b) { return zz_cmp_1(this, b) > 0; }
+   int operator<=(long b) { return zz_cmp_1(this, b) <= 0; }
+   int operator>=(long b) { return zz_cmp_1(this, b) >= 0; }
+
    ZZ_t const operator-() const;
    
    ZZ_t operator+(const ZZ_t& b);
+   ZZ_t operator+(long b);
    ZZ_t operator-(const ZZ_t& b);
+   ZZ_t operator-(long b);
    ZZ_t operator*(const ZZ_t& b);
    ZZ_t operator*(long b);
    ZZ_t operator/(const ZZ_t& b);
+   ZZ_t operator/(long b);
+   ZZ_t operator>>(long b);
    
    const ZZ_t operator+=(const ZZ_t& b);
    const ZZ_t operator*=(long b);
    const ZZ_t operator*=(const ZZ_t& b);
    const ZZ_t operator/=(const ZZ_t& b);
+   const ZZ_t operator>>=(long b);
 };
 
 static inline

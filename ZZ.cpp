@@ -33,9 +33,9 @@ int ZZ_t::operator==(const ZZ_t& b)
 }
 
 /* w.b. hart */
-int ZZ_t::operator==(long z)
-{
-   return zz_equal_1(this, z);
+int ZZ_t::operator==(long b) const
+{ 
+   return zz_cmp_1(this, b) == 0; 
 }
 
 /* w.b. hart */
@@ -52,12 +52,26 @@ ZZ_t const ZZ_t::operator-() const
 ZZ_t ZZ_t::operator+(const ZZ_t& b)
 {
    ZZ_t r;
-
+   
    zz_add(&r, this, &b);
 
    return r;
 }
 
+/* w.b. hart */
+ZZ_t ZZ_t::operator+(long b)
+{
+   ZZ_t r;
+   ZZ_t B(b);
+
+   if (b >= 0)
+      zz_add_1(&r, this, b);
+   else
+      zz_sub_1(&r, this, -b);
+
+   return r;
+}
+  
 /* w.b. hart */
 ZZ_t ZZ_t::operator-(const ZZ_t& b)
 {
@@ -65,6 +79,20 @@ ZZ_t ZZ_t::operator-(const ZZ_t& b)
 
    zz_sub(&r, this, &b);
 
+   return r;
+}
+
+/* w.b. hart */
+ZZ_t ZZ_t::operator-(long b)
+{
+   ZZ_t r;
+   ZZ_t B(b);
+
+   if (b >= 0)
+      zz_sub_1(&r, this, b);
+   else
+      zz_add_1(&r, this, -b);
+ 
    return r;
 }
 
@@ -84,6 +112,27 @@ ZZ_t ZZ_t::operator*(const ZZ_t& b)
    ZZ_t r;
 
    zz_mul(&r, this, &b);
+
+   return r;
+}
+
+/* w.b. hart */
+ZZ_t ZZ_t::operator>>(long b)
+{
+   ZZ_t r;
+
+   zz_shr_1(&r, this, b);
+
+   return r;
+}
+
+/* w.b. hart */
+const ZZ_t ZZ_t::operator>>=(long b)
+{
+   ZZ_t r;
+
+   zz_shr_1(&r, this, b);
+   zz_copy(this, &r);
 
    return r;
 }
@@ -132,6 +181,17 @@ ZZ_t ZZ_t::operator/(const ZZ_t& b)
 }
 
 /* w.b. hart */
+ZZ_t ZZ_t::operator/(long b)
+{
+   ZZ_t q;
+   ZZ_t B(b);
+
+   zz_div(&q, this, &B);
+
+   return q;
+}
+
+/* w.b. hart */
 const ZZ_t ZZ_t::operator/=(const ZZ_t& b)
 {
    ZZ_t q;
@@ -171,10 +231,42 @@ ZZ_t gcd(const ZZ_t& a, const ZZ_t& b)
    return g;
 }
 
-/* w.b. hart */
-int jacobi(const ZZ_t& a, const ZZ_t& b)
+/* Peter Luschny */
+int jacobi(const ZZ_t& A, const ZZ_t& B)
 {
-   return zz_jacobi(&a, &b);
+   int j = 1, res, r8, remb4, remb8;
+   ZZ_t a, b;
+   
+   if (A == 0L)
+      return B == 1L;
+
+   a = A;
+   b = B;
+
+   while (a != 0L) {
+      remb4 = (b.n[0] % 4) == 3L;
+
+      if (a < 0L) {
+         zz_neg(&a, &a);
+         j = remb4 ? -j : j;
+      }
+
+      remb8 = ((r8 = (b.n[0] % 8)) == 3L || r8 == 5L);
+
+      while ((a.n[0] % 2) == 0) {
+         a >>= 1;
+         if (remb8) j = -j;
+      }
+  
+      j = (a.n[0] % 4) == 3 && remb4 ? -j : j; 
+  
+      zz_larem(&b, &b, &a);
+      zz_swap(&a, &b);
+   }
+  
+   res = b > 1L ? 0 : j;
+
+   return res;
 }
 
 /* w.b. hart */

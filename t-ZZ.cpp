@@ -58,7 +58,7 @@ void test_muldiv(rand_t state)
       randbits(a, state, -(long)n_randint(state, 1000));   
       do {
          randbits(b, state, -(long)n_randint(state, 1000));
-      } while (b == 0);
+      } while (b == 0L);
 
 
       ZZ_t c = a * b;
@@ -81,7 +81,7 @@ void test_divdivrem(rand_t state)
       randbits(a, state, -(long)n_randint(state, 1000));
       do {
          randbits(b, state, -(long)n_randint(state, 1000));
-      } while (b == 0);
+      } while (b == 0L);
 
       ZZ_t q1 = a / b, q2, r2;
       divrem(q2, r2, a, b);

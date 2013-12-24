@@ -132,6 +132,8 @@ void zz_neg(zz_ptr r, zz_srcptr a);
 
 void zz_mul_1(zz_ptr r, zz_srcptr a, word_t c);
 
+void zz_shr_1(zz_ptr r, zz_srcptr a, long bits);
+
 /**********************************************************************
  
     Quadratic functions

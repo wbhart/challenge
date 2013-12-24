@@ -273,6 +273,10 @@ void zz_add_1(zz_ptr r, zz_srcptr a, word_t c)
    if (a->size >= 0) {
       r->n[usize] = nn_add_1(r->n, a->n, usize, c);
       r->size = nn_normalise(r->n, usize + 1);
+   } else if (usize == 1) {
+      word_t d = a->n[0];
+      r->n[0] = d >= c ? d - c : c - d;
+      r->size = d == c ? 0 : (d > c ? -1 : 1);
    } else {
       nn_sub_1(r->n, a->n, usize, c);
       r->size = -nn_normalise(r->n, usize);
@@ -293,6 +297,10 @@ void zz_sub_1(zz_ptr r, zz_srcptr a, word_t c)
       if (a->size < 0) {
          r->n[usize] = nn_add_1(r->n, a->n, usize, c);
          r->size = -nn_normalise(r->n, usize + 1);
+      } else if (usize == 1) {
+         word_t d = a->n[0];
+         r->n[0] = d >= c ? d - c : c - d;
+         r->size = d == c ? 0 : (d > c ? 1 : -1);
       } else {
          nn_sub_1(r->n, a->n, usize, c);
          r->size = nn_normalise(r->n, usize);
@@ -371,6 +379,27 @@ void zz_mul_1(zz_ptr r, zz_srcptr a, word_t c)
 
       r->n[usize] = nn_mul_1(r->n, a->n, usize, c, 0);
       usize += (r->n[usize] != 0);
+
+      r->size = a->size >= 0 ? usize : -usize;
+   }
+}
+
+/* w.b. hart */
+void zz_shr_1(zz_ptr r, zz_srcptr a, long bits)
+{
+   long usize = ABS(a->size);
+   long w = (bits / WORD_BITS);
+   long b = (bits % WORD_BITS);
+      
+   if (usize <= w)
+      r->size = 0;
+   else
+   {
+      usize -= w;
+      zz_fit(r, usize);
+
+      nn_shr(r->n, a->n + w, usize, b, 0);
+      usize -= (r->n[usize - 1] == 0);
 
       r->size = a->size >= 0 ? usize : -usize;
    }
@@ -539,50 +568,6 @@ void zz_gcd(zz_ptr g, zz_srcptr a, zz_srcptr b)
 
       TMP_END;
    }
-}
-
-/* w.b. hart -- inspired by Peter Luschny's implementation */
-int zz_jacobi(zz_srcptr A, zz_srcptr B)
-{
-   int j = 1, res, r8, remb4, remb8;
-   zz_t a, b;
-   
-   if (zz_is_zero(A))
-      return zz_equal_1(B, 1);
-
-   zz_init(a);
-   zz_init(b);
-   
-   zz_copy(a, A);
-   zz_copy(b, B);
-
-   while  (!zz_is_zero(a)) {
-      remb4 = (b->n[0] % 4) == 3;
-
-      if (a->size < 0) {
-         zz_neg(a, a);
-         j = remb4 ? -j : j;
-      }
-
-      remb8 = ((r8 = (b->n[0] % 8)) == 3 || r8 == 5);
-
-      while ((a->n[0] % 2) == 0) {
-         zz_div_2exp(a, a, 1);
-         if (remb8) j = -j;
-      }
-  
-      j = (a->n[0] % 4) == 3 && remb4 ? -j : j; 
-  
-      zz_larem(b, b, a);
-      zz_swap(a, b);
-   }
-  
-   res = zz_cmp_1(b, 1) > 0 ? 0 : j;
-
-   zz_clear(a);
-   zz_clear(b);
-
-   return res;
 }
 
 /**********************************************************************
