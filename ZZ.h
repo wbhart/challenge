@@ -132,11 +132,15 @@ int is_odd(const ZZ_t& a)
    return a.size != 0 && (a.n[0] % 2) == 1;
 }
 
+void swap(ZZ_t& a, ZZ_t& b);
+
 void randbits(ZZ_t& r, rand_t state, long bits);
 
 void random(ZZ_t& r, rand_t state, va_list args);
 
 void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b);
+
+ZZ_t larem(const ZZ_t& a, const ZZ_t& b);
 
 ZZ_t gcd(const ZZ_t & a, const ZZ_t & b);
 

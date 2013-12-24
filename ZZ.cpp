@@ -1,5 +1,6 @@
 /*
    Copyright (c) 2013, William Hart
+   Copyright (c) 2013, Peter Luschny
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without modification,
@@ -203,6 +204,12 @@ const ZZ_t ZZ_t::operator/=(const ZZ_t& b)
 }
 
 /* w.b. hart */
+void swap(ZZ_t& a, ZZ_t& b)
+{
+   zz_swap(&a, &b);
+}
+
+/* w.b. hart */
 void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b)
 {
    zz_divrem(&q, &r, &a, &b);
@@ -219,6 +226,16 @@ ZZ_t::ZZ_t(const char * str)
 long set_str(ZZ_t& a, const char * str)
 {
    return zz_set_str(&a, str);
+}
+
+/* w.b. hart */
+ZZ_t larem(const ZZ_t& a, const ZZ_t& b)
+{
+   ZZ_t r;
+
+   zz_larem(&r, &a, &b);
+
+   return r;
 }
 
 /* w.b. hart */
@@ -247,7 +264,7 @@ int jacobi(const ZZ_t& A, const ZZ_t& B)
       remb4 = (b.n[0] % 4) == 3L;
 
       if (a < 0L) {
-         zz_neg(&a, &a);
+         a = -a;
          j = remb4 ? -j : j;
       }
 
@@ -260,8 +277,8 @@ int jacobi(const ZZ_t& A, const ZZ_t& B)
   
       j = (a.n[0] % 4) == 3 && remb4 ? -j : j; 
   
-      zz_larem(&b, &b, &a);
-      zz_swap(&a, &b);
+      b = larem(b, a);
+      swap(a, b);
    }
   
    res = b > 1L ? 0 : j;
