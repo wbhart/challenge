@@ -42,14 +42,14 @@
 #define n_divrem_21(q, hi, lo, n)                                         \
    do {                                                                   \
       const dword_t __u = ((dword_t) (hi) << WORD_BITS) + (dword_t) (lo); \
-      (q) = (word_t) (__u / (n));                                           \
-      (lo) = (word_t) (__u % (n));                                          \
+      (q) = (word_t) (__u / (n));                                         \
+      (lo) = (word_t) (__u % (n));                                        \
    } while (0)
 
 #define n_div_21(q, hi, lo, n)                                            \
    do {                                                                   \
       const dword_t __u = ((dword_t) (hi) << WORD_BITS) + (dword_t) (lo); \
-      (q) = (word_t) (__u / (n));                                           \
+      (q) = (word_t) (__u / (n));                                         \
    } while (0)
 
 word_t n_randword(rand_t state);
