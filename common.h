@@ -103,7 +103,7 @@ typedef struct
 
 typedef rand_s rand_t[1];
 
-static inline
+static __inline
 void randinit(rand_t state)
 {
 #if WORD_BITS == 64
