@@ -180,7 +180,7 @@ ZZ_t ZZ_t::operator/(const ZZ_t& b)
    return q;
 }
 
-/* w.b. hart */
+/* w.b. hart */ /* TODO: make this efficient */
 ZZ_t ZZ_t::operator/(long b)
 {
    ZZ_t q;
@@ -329,7 +329,7 @@ ZZ_t fib_takahashi(unsigned long n)
     for (i = n_bitcount(n) - 2; i > 0; i--)
     {
         c = a*a;
-        a = (a+b) / 2;
+        a = (a+b) >> 1;
         a = (a*a)*2 - c*3 - 2*sign;
         b = c*5 + 2*sign;
         sign = 1;
@@ -341,7 +341,7 @@ ZZ_t fib_takahashi(unsigned long n)
         }
     }
     if (n & 1)
-        return ((a + b) / 2) * b - sign;
+        return ((a + b) >> 1) * b - sign;
     else
         return a * b;
 }
