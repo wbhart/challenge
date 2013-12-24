@@ -392,8 +392,8 @@ void nn_divrem(nn_t q, nn_t a, long m, nn_src_t d, long n)
    TMP_INIT;
 
    /* shift a and d left by norm(d) bits */
+   TMP_START;
    if (norm) {
-      TMP_START;
       b = TMP_ALLOC(n*sizeof(word_t));
       ci = nn_shl(a, a, m, norm, 0);
       nn_shl(b, d, n, norm, 0);
@@ -407,8 +407,8 @@ void nn_divrem(nn_t q, nn_t a, long m, nn_src_t d, long n)
    /* shift remainder to the right by norm(d) bits */
    if (norm) {
       nn_shr(a, a, n, norm, 0);
-      TMP_END;
    }
+   TMP_END;
 }
 
 /* w.b. hart */
