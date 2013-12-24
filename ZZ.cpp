@@ -60,7 +60,7 @@ ZZ_t ZZ_t::operator+(const ZZ_t& b)
 }
 
 /* w.b. hart */
-ZZ_t ZZ_t::operator+(long b)
+ZZ_t ZZ_t::operator+(long b) const
 {
    ZZ_t r;
    ZZ_t B(b);
@@ -84,7 +84,7 @@ ZZ_t ZZ_t::operator-(const ZZ_t& b)
 }
 
 /* w.b. hart */
-ZZ_t ZZ_t::operator-(long b)
+ZZ_t ZZ_t::operator-(long b) const
 {
    ZZ_t r;
    ZZ_t B(b);
@@ -98,7 +98,7 @@ ZZ_t ZZ_t::operator-(long b)
 }
 
 /* w.b. hart */
-ZZ_t ZZ_t::operator*(long b)
+ZZ_t ZZ_t::operator*(long b) const
 {
    ZZ_t r;
 
@@ -115,6 +115,17 @@ ZZ_t ZZ_t::operator*(const ZZ_t& b)
    zz_mul(&r, this, &b);
 
    return r;
+}
+
+/* w.b. hart */
+long ZZ_t::operator%(long b) const
+{
+   if (b >= 0 && (b & (b - 1)) == 0)
+      return this->n[0] % b;
+   else {
+      ZZ_t q;
+      return zz_divrem_1(&q, this, b);
+   }
 }
 
 /* w.b. hart */
@@ -181,13 +192,12 @@ ZZ_t ZZ_t::operator/(const ZZ_t& b)
    return q;
 }
 
-/* w.b. hart */ /* TODO: make this efficient */
-ZZ_t ZZ_t::operator/(long b)
+/* w.b. hart */
+ZZ_t ZZ_t::operator/(long b) const
 {
    ZZ_t q;
-   ZZ_t B(b);
-
-   zz_div(&q, this, &B);
+   
+   zz_divrem_1(&q, this, b);
 
    return q;
 }
@@ -261,21 +271,21 @@ int jacobi(const ZZ_t& A, const ZZ_t& B)
    b = B;
 
    while (a != 0L) {
-      remb4 = (b.n[0] % 4) == 3L;
+      remb4 = (b % 4) == 3L;
 
       if (a < 0L) {
          a = -a;
          j = remb4 ? -j : j;
       }
 
-      remb8 = ((r8 = (b.n[0] % 8)) == 3L || r8 == 5L);
+      remb8 = ((r8 = (b % 8)) == 3L || r8 == 5L);
 
       while ((a.n[0] % 2) == 0) {
          a >>= 1;
          if (remb8) j = -j;
       }
   
-      j = (a.n[0] % 4) == 3 && remb4 ? -j : j; 
+      j = (a % 4) == 3 && remb4 ? -j : j; 
   
       b = larem(b, a);
       swap(a, b);

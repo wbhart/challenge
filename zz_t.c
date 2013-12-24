@@ -354,6 +354,40 @@ void zz_div_2exp(zz_ptr r, zz_srcptr a, long exp)
 }
 
 /* w.b. hart */
+long zz_divrem_1(zz_ptr q, zz_srcptr a, long b)
+{
+   long asize = ABS(a->size);
+   long r, qsize = asize;
+   zz_t t;
+
+   if (asize == 0) {
+      q->size = 0;
+      r = b;
+   } else {
+      zz_init(t);
+      zz_copy(t, a);
+
+      zz_fit(q, qsize);
+   
+      r = nn_divrem_1(q->n, t->n, asize, b, 0);
+         
+      qsize -= q->n[qsize - 1] == 0;
+      
+      q->size = (a->size ^ b) >= 0 ? qsize : -qsize;
+      r = a->size >= 0 ? r : -r;
+
+      if (q->size < 0 && r != 0) {
+         zz_sub_1(q, q, 1);
+         r += b;
+      }
+
+      zz_clear(t);
+   }
+
+   return r;
+}
+
+/* w.b. hart */
 void zz_neg(zz_ptr r, zz_srcptr a)
 {
    if (r != a) {

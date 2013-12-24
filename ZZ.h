@@ -104,13 +104,14 @@ public:
    ZZ_t const operator-() const;
    
    ZZ_t operator+(const ZZ_t& b);
-   ZZ_t operator+(long b);
+   ZZ_t operator+(long b) const;
    ZZ_t operator-(const ZZ_t& b);
-   ZZ_t operator-(long b);
+   ZZ_t operator-(long b) const;
    ZZ_t operator*(const ZZ_t& b);
-   ZZ_t operator*(long b);
+   ZZ_t operator*(long b) const;
    ZZ_t operator/(const ZZ_t& b);
-   ZZ_t operator/(long b);
+   ZZ_t operator/(long b) const;
+   long operator%(long b) const;
    ZZ_t operator>>(long b);
    
    const ZZ_t operator+=(const ZZ_t& b);
