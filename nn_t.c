@@ -520,7 +520,7 @@ char * nn_get_str(nn_t a, long m)
    long i = 0, j;
    long digits = (long) ceil(m * 9.632959861247398 * (WORD_BITS/32)) + (m == 0);
    char * str = (char *) malloc(digits + 1);
-   word_t ci, d = 10L << (WORD_BITS - 4);
+   word_t ci, d = 10UL << (WORD_BITS - 4);
    nn_t q1, q2;
    TMP_INIT;
 
