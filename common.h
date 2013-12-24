@@ -33,7 +33,7 @@
 #include <limits.h>
 #include <math.h>
 
-#if defined(_MSC_VER) || defined(__MINGW32)
+#if defined(_MSC_VER) || defined(__MINGW32__)
 #include "malloc.h"
 #else
 #include "alloca.h"
