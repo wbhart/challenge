@@ -454,7 +454,7 @@ int is_prime(const ZZ_t& n)
    k = (n - 1) / 2;
    b = n.bits();
 
-   l = (long) (0.96090602783640285*b*b); /* 2*log(n)^2 */
+   l = (long) (0.96090602783640285*b*b); /* >= 2*log(n)^2 */
    l = b <= 8 ? MIN(long(n) - 1, l) : l;
    
    for (i = 2; i < l; i++) {
