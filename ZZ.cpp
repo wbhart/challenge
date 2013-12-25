@@ -28,6 +28,20 @@
 #include "ZZ.h"  
 
 /* w.b. hart */
+ZZ_t::operator long int() const
+{ 
+   return this->size >= 0 ? this->n[0] : -this->n[0]; 
+}
+
+/* w.b. hart */
+long ZZ_t::bits() const
+{ 
+   long s = this->size; 
+   
+   return s == 0 ? 0 : s*WORD_BITS - n_leading_zeroes(this->n[s - 1]);
+}
+
+/* w.b. hart */
 int ZZ_t::operator==(const ZZ_t& b)
 {
    return zz_cmp(this, &b) == 0;
@@ -129,7 +143,7 @@ long ZZ_t::operator%(long b) const
 }
 
 /* w.b. hart */
-ZZ_t ZZ_t::operator>>(long b)
+ZZ_t ZZ_t::operator>>(long b) const
 {
    ZZ_t r;
 
@@ -190,6 +204,16 @@ ZZ_t ZZ_t::operator/(const ZZ_t& b)
    zz_div(&q, this, &b);
 
    return q;
+}
+
+/* w.b. hart */
+ZZ_t ZZ_t::operator%(const ZZ_t& b)
+{
+   ZZ_t q, r;
+
+   zz_divrem(&q, &r, this, &b);
+
+   return r;
 }
 
 /* w.b. hart */
@@ -381,3 +405,73 @@ ZZ_t fib(unsigned long n)
         return fib_takahashi(n);
 }
 
+/* w.b. hart */
+ZZ_t powmod(const ZZ_t& a, const ZZ_t& e, const ZZ_t & n)
+{     
+   ZZ_t res, pow, exp;
+
+   if (n == 1 || a == 0)
+      return ZZ_t(0);
+
+   res = 1;
+   pow = a;
+   exp = e;
+
+   if (exp != 0) {
+      while ((exp % 2) == 0) {
+         pow = (pow*pow) % n;
+         exp >>= 1;
+      }
+     
+      res = pow;
+
+      while ((exp >>= 1) != 0) {
+         pow = (pow*pow) % n;
+         if ((exp % 2) == 1)
+            res = (res*pow) % n;
+      }
+   }
+
+   return res;
+}
+
+/* w.b. hart --  based on Peter Luschny's Python implementation */
+int is_prime(const ZZ_t& n)
+{
+   ZZ_t k, m;
+   long b, i, l;
+   int j;
+
+   if (n <= 1L)
+      return 0;
+   
+   if (n <= 3L)
+      return 1;
+
+   if ((n % 2) == 0L)
+      return 0;
+
+   k = (n - 1) / 2;
+   b = n.bits();
+
+   l = (long) (0.96090602783640285*b*b); /* 2*log(n)^2 */
+   l = b <= 8 ? MIN(long(n) - 1, l) : l;
+   
+   for (i = 2; i < l; i++) {
+      j = jacobi(ZZ_t(i), n);
+      if (j == 0)
+         return 0;
+
+      m = powmod(ZZ_t(i), k, n);
+
+      if (j == 1) {
+         if (m != 1) 
+            return 0;
+      } else {
+         if (m != n - 1)
+            return 0;   
+      }
+   }
+
+   return 1;      
+}

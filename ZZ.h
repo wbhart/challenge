@@ -30,6 +30,7 @@
 #include <vector>
 
 #include "common.h"
+#include "word.h"
 #include "zz_t.h"
 
 using namespace std;
@@ -85,6 +86,8 @@ public:
       return *this;
    }
 
+   explicit operator long int() const;
+
    int operator==(long b) const;
    int operator!=(long b) const { return !(*this == b); }
 
@@ -96,10 +99,10 @@ public:
    int operator<=(const ZZ_t& b) { return zz_cmp(this, &b) <= 0; }
    int operator>=(const ZZ_t& b) { return zz_cmp(this, &b) >= 0; }
 
-   int operator<(long b) { return zz_cmp_1(this, b) < 0; }
-   int operator>(long b) { return zz_cmp_1(this, b) > 0; }
-   int operator<=(long b) { return zz_cmp_1(this, b) <= 0; }
-   int operator>=(long b) { return zz_cmp_1(this, b) >= 0; }
+   int operator<(long b) const { return zz_cmp_1(this, b) < 0; }
+   int operator>(long b) const { return zz_cmp_1(this, b) > 0; }
+   int operator<=(long b) const { return zz_cmp_1(this, b) <= 0; }
+   int operator>=(long b) const { return zz_cmp_1(this, b) >= 0; }
 
    ZZ_t const operator-() const;
    
@@ -110,15 +113,18 @@ public:
    ZZ_t operator*(const ZZ_t& b);
    ZZ_t operator*(long b) const;
    ZZ_t operator/(const ZZ_t& b);
+   ZZ_t operator%(const ZZ_t& b);
    ZZ_t operator/(long b) const;
    long operator%(long b) const;
-   ZZ_t operator>>(long b);
+   ZZ_t operator>>(long b) const;
    
    const ZZ_t operator+=(const ZZ_t& b);
    const ZZ_t operator*=(long b);
    const ZZ_t operator*=(const ZZ_t& b);
    const ZZ_t operator/=(const ZZ_t& b);
    const ZZ_t operator>>=(long b);
+
+   long bits() const;
 };
 
 static inline
@@ -154,6 +160,10 @@ ostream& operator<<(ostream& os, const ZZ_t& z);
 ZZ_t fac(long n);
 
 ZZ_t fib(unsigned long n);
+
+ZZ_t powmod(const ZZ_t& a, const ZZ_t& exp, const ZZ_t & n);
+
+int is_prime(const ZZ_t& n);
 
 #endif
 

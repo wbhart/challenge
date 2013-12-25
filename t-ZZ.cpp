@@ -185,17 +185,51 @@ void test_fib(rand_t state)
    cout << "PASS" << endl;
 }
 
+void test_is_prime(rand_t state)
+{
+   ZZ_t a, b, c;
+   long i, j;
+
+   cout << "is_prime... ";
+
+   for (i = 0; i < 100; i++) /* check primes have no small factors */
+   {
+        do {
+           randbits(a, state, n_randint(state, 32));
+        } while (!is_prime(a));
+      
+        for (j = 2; j < 100; j++)
+           assert((a % j) != 0 || a == j);
+   }
+
+   for (i = 0; i < 100; i++) /* check composites don't pass */
+   {
+        do {
+           randbits(a, state, n_randint(state, 32));
+        } while (!is_prime(a));
+      
+        do {
+           randbits(b, state, n_randint(state, 32));
+        } while (!is_prime(b));
+      
+        assert(!is_prime(a*b));
+   }
+
+   cout << "PASS" << endl;
+}
+
 int main(void)
 {
    rand_t state;
    randinit(state);
-
+   
    test_addsub(state);
    test_muldiv(state);
    test_divdivrem(state);
    test_gcd(state);
    test_jacobi(state);
    test_fib(state);
+   test_is_prime(state);
 
    return 0;
 }
