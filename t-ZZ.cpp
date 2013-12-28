@@ -35,8 +35,8 @@ void test_addsub(rand_t state)
    cout << "add/sub... ";
 
    for (i = 0; i < 10000; i++) {
-      randbits(a, state, n_randint(state, 1000));
-      randbits(b, state, n_randint(state, 1000));
+      randbits(a, state, -(long)n_randint(state, 1000));
+      randbits(b, state, -(long)n_randint(state, 1000));
 
       ZZ_t c = a + b;
       c = c - b;

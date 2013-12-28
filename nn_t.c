@@ -560,8 +560,10 @@ long nn_set_str(nn_t a, long * len, const char * str)
    long i, m = 1, digits = strspn(str, "0123456789");
    word_t ci;
 
-   if (digits == 1 && str[0] == '0')
-      return 0;
+   if (digits == 1 && str[0] == '0') {
+      *len = 0;
+      return 1;
+   }
 
    a[0] = (word_t) str[0] - 48;
    for (i = 1; i < digits; i++) {
