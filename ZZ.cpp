@@ -1,6 +1,7 @@
 /*
    Copyright (c) 2013, William Hart
    Copyright (c) 2013, Peter Luschny
+   Copyright (c) 2013, Fredrik Johansson
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without modification,
@@ -147,7 +148,7 @@ ZZ_t ZZ_t::operator>>(long b) const
 {
    ZZ_t r;
 
-   zz_shr_1(&r, this, b);
+   zz_div_2exp(&r, this, b);
 
    return r;
 }
@@ -157,7 +158,7 @@ const ZZ_t ZZ_t::operator>>=(long b)
 {
    ZZ_t r;
 
-   zz_shr_1(&r, this, b);
+   zz_div_2exp(&r, this, b);
    zz_copy(this, &r);
 
    return r;

@@ -51,7 +51,7 @@ void zz_clear(zz_ptr r)
 void zz_fit(zz_ptr r, long m)
 {
    if (r->alloc < m) {
-      r->n = (nn_t) realloc(r->n, sizeof(nn_t)*m);
+      r->n = (nn_t) realloc(r->n, sizeof(word_t)*m);
       r->alloc = m;
    }
 }
@@ -77,7 +77,7 @@ void zz_set_1(zz_ptr r, long c)
    if (c) {
       zz_fit(r, 1);
       r->n[0] = ABS(c);
-      r->size = c >= 0 ? 1 : -1;
+      r->size = c > 0 ? 1 : -1;
    } else
       r->size = 0;
 }
@@ -127,8 +127,8 @@ int zz_cmp_1(zz_srcptr a, long b)
    if (a->n[0] == abs)
       return 0;
    
-   return (long) a->n[0] > abs ? sgn : -sgn;
- }
+   return a->n[0] > (word_t) abs ? sgn : -sgn;
+}
 
 /* w.b. hart */
 int zz_cmpabs(zz_srcptr a, zz_srcptr b)
@@ -167,7 +167,7 @@ void zz_randbits(zz_ptr a, rand_t state, long bits)
    nn_randbits(a->n, state, ubits);
 
    size = nn_normalise(a->n, size);
-   a->size = (bits < 0) & n_randint(state, 2) ? -size : size;
+   a->size = (bits < 0 && n_randint(state, 2) == 0) ? -size : size;
 }
 
 /**********************************************************************
@@ -217,7 +217,7 @@ void zz_add(zz_ptr r, zz_srcptr a, zz_srcptr b)
       word_t bi = nn_sub(r->n, a->n, asize, b->n, bsize, 0);
       rsize = a->size;
       
-      if (bi) {
+      if (bi != 0) {
          nn_neg(r->n, r->n, asize, 0);
          rsize = -rsize;
       }
@@ -275,8 +275,12 @@ void zz_add_1(zz_ptr r, zz_srcptr a, word_t c)
       r->size = nn_normalise(r->n, usize + 1);
    } else if (usize == 1) {
       word_t d = a->n[0];
-      r->n[0] = d >= c ? d - c : c - d;
-      r->size = d == c ? 0 : (d > c ? -1 : 1);
+      if (d == c)
+         r->size = 0;
+      else {
+         r->n[0] = d > c ? d - c : c - d;
+         r->size = d > c ? -1 : 1;
+      }
    } else {
       nn_sub_1(r->n, a->n, usize, c);
       r->size = -nn_normalise(r->n, usize);
@@ -299,8 +303,12 @@ void zz_sub_1(zz_ptr r, zz_srcptr a, word_t c)
          r->size = -nn_normalise(r->n, usize + 1);
       } else if (usize == 1) {
          word_t d = a->n[0];
-         r->n[0] = d >= c ? d - c : c - d;
-         r->size = d == c ? 0 : (d > c ? 1 : -1);
+         if (d == c)
+            r->size = 0;
+         else {
+            r->n[0] = d > c ? d - c : c - d;
+            r->size = d > c ? 1 : -1;
+         }
       } else {
          nn_sub_1(r->n, a->n, usize, c);
          r->size = nn_normalise(r->n, usize);
@@ -311,22 +319,27 @@ void zz_sub_1(zz_ptr r, zz_srcptr a, word_t c)
 /* w.b. hart */
 void zz_mul_2exp(zz_ptr r, zz_srcptr a, long exp)
 {
-   int bits = exp & (WORD_BITS - 1);
-   long words = exp / WORD_BITS;
-   long usize = ABS(a->size);
-   long rsize;
+   if (a->size == 0)
+      r->size = 0;
+   else
+   {
+      int bits = exp & (WORD_BITS - 1);
+      long words = exp / WORD_BITS;
+      long usize = ABS(a->size);
+      long rsize = usize + words;
    
-   zz_fit(r, usize + words + (bits != 0));
+      zz_fit(r, rsize + (bits != 0));
 
-   if (!bits) {
-      nn_copyd(r->n + words, a->n, usize);
-      rsize = usize + words;
-   } else {
-      word_t ci = r->n[usize + words] = nn_shl(r->n + words, a->n, usize, bits, 0);
-      rsize = usize + words + (ci != 0);  
+      if (bits == 0)
+         nn_copyd(r->n + words, a->n, usize);
+      else {
+         word_t ci = r->n[rsize] = nn_shl(r->n + words, a->n, usize, bits, 0);
+         rsize += (ci != 0);  
+      }
+
+      nn_zero(r->n, words);
+      r->size = a->size >= 0 ? rsize : -rsize;
    }
-
-   r->size = a->size >= 0 ? rsize : -rsize;
 }
 
 /* w.b. hart */
@@ -369,7 +382,7 @@ long zz_divrem_1(zz_ptr q, zz_srcptr a, long b)
 
       zz_fit(q, qsize);
    
-      r = nn_divrem_1(q->n, t->n, asize, b, 0);
+      r = nn_divrem_1(q->n, t->n, asize, ABS(b), 0);
          
       qsize -= q->n[qsize - 1] == 0;
       
@@ -413,27 +426,6 @@ void zz_mul_1(zz_ptr r, zz_srcptr a, word_t c)
 
       r->n[usize] = nn_mul_1(r->n, a->n, usize, c, 0);
       usize += (r->n[usize] != 0);
-
-      r->size = a->size >= 0 ? usize : -usize;
-   }
-}
-
-/* w.b. hart */
-void zz_shr_1(zz_ptr r, zz_srcptr a, long bits)
-{
-   long usize = ABS(a->size);
-   long w = (bits / WORD_BITS);
-   long b = (bits % WORD_BITS);
-      
-   if (usize <= w)
-      r->size = 0;
-   else
-   {
-      usize -= w;
-      zz_fit(r, usize);
-
-      nn_shr(r->n, a->n + w, usize, b, 0);
-      usize -= (r->n[usize - 1] == 0);
 
       r->size = a->size >= 0 ? usize : -usize;
    }
@@ -544,7 +536,7 @@ void zz_div(zz_ptr q, zz_srcptr a, zz_srcptr b)
    long bsize = ABS(b->size);
    long rsize = bsize;
    long qsize = asize - bsize + 1;
-   int qsign = (a->size ^ b->size);
+   long qsign = (a->size ^ b->size);
    zz_t r;
 
    if (asize < bsize)
