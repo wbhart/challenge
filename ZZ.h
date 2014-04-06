@@ -1,5 +1,6 @@
 /*
    Copyright (c) 2013, William Hart
+
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without modification,
@@ -26,144 +27,180 @@
 
 #include <cstdlib>
 #include <cstdarg>
+#include <cstring>
 #include <iostream>
-#include <vector>
 
 #include "common.h"
 #include "word.h"
-#include "zz_t.h"
+#include "nn_t.h"
 
 using namespace std;
 
 #ifndef ZZ_CPP_H
 #define ZZ_CPP_H
 
-class ZZ_t : public zz_struct {
+class ZZ {
+
+   nn_t n;
+   long size;
+   long alloc;
+
 public:
 
-   explicit ZZ_t(long c) { 
-      zz_init(this);
-      zz_set_1(this, c);
+   explicit ZZ() {
+      n = NULL;
+      size = 0;
+      alloc = 0;
    }
 
-   explicit ZZ_t(int c) { 
-      zz_init(this);
-      zz_set_1(this, c); 
+   explicit ZZ(long c) { 
+      n = (nn_t) malloc(sizeof(word_t));
+      size = c == 0 ? 0 : (c < 0 ? -1 : 1);
+      alloc = 1;
+      n[0] = c < 0 ? -c : c;
    }
 
-   explicit ZZ_t() {
-      zz_init(this);
+   explicit ZZ(int c) { 
+      n = (nn_t) malloc(sizeof(word_t));
+      size = c == 0 ? 0 : (c < 0 ? -1 : 1);
+      alloc = 1;
+      n[0] = c < 0 ? -c : c;
    }
 
-   explicit ZZ_t(const char * str);
-
-   ~ZZ_t() { 
-      zz_clear(this);
+   explicit ZZ(const ZZ& c) {
+      size = c.size;
+      alloc = ABS(size);
+      n = (nn_t) malloc(sizeof(word_t)*alloc);
+      nn_copyi(n, c.n, alloc);
    }
 
-   ZZ_t(const ZZ_t& b) {
-      zz_init(this);
-      zz_copy(this, &b);
+   explicit ZZ(const char * str);
+
+   ~ZZ() { 
+      free(this->n);
    }
 
-   ZZ_t(ZZ_t&& b) {
-      zz_init(this);
-      zz_copy(this, &b);
-   }
+   ZZ& operator=(long c);
 
-   const ZZ_t operator=(const ZZ_t& b) {
-      zz_copy(this, &b);
-      return *this;
-   }
+   ZZ& operator=(int c);
 
-   const ZZ_t operator=(ZZ_t&& b) {
-      zz_copy(this, &b);
-      return *this;
-   }
+   ZZ& operator=(const ZZ& c);
 
-   const ZZ_t operator=(long b) {
-      zz_set_1(this, b);
-      return *this;
-   }
-
-   explicit operator long int() const;
-
-   int operator==(long b) const;
-   int operator!=(long b) const { return !(*this == b); }
-
-   int operator==(const ZZ_t& b);
-   int operator!=(const ZZ_t& b) { return !(*this == b); }
-
-   int operator<(const ZZ_t& b) { return zz_cmp(this, &b) < 0; }
-   int operator>(const ZZ_t& b) { return zz_cmp(this, &b) > 0; }
-   int operator<=(const ZZ_t& b) { return zz_cmp(this, &b) <= 0; }
-   int operator>=(const ZZ_t& b) { return zz_cmp(this, &b) >= 0; }
-
-   int operator<(long b) const { return zz_cmp_1(this, b) < 0; }
-   int operator>(long b) const { return zz_cmp_1(this, b) > 0; }
-   int operator<=(long b) const { return zz_cmp_1(this, b) <= 0; }
-   int operator>=(long b) const { return zz_cmp_1(this, b) >= 0; }
-
-   ZZ_t const operator-() const;
+   int operator==(const ZZ& c) const;
    
-   ZZ_t operator+(const ZZ_t& b);
-   ZZ_t operator+(long b) const;
-   ZZ_t operator-(const ZZ_t& b);
-   ZZ_t operator-(long b) const;
-   ZZ_t operator*(const ZZ_t& b);
-   ZZ_t operator*(long b) const;
-   ZZ_t operator/(const ZZ_t& b);
-   ZZ_t operator%(const ZZ_t& b);
-   ZZ_t operator/(long b) const;
-   long operator%(long b) const;
-   ZZ_t operator>>(long b) const;
-   
-   const ZZ_t operator+=(const ZZ_t& b);
-   const ZZ_t operator*=(long b);
-   const ZZ_t operator*=(const ZZ_t& b);
-   const ZZ_t operator/=(const ZZ_t& b);
-   const ZZ_t operator>>=(long b);
+   int operator!=(const ZZ& c) const { 
+      return !(*this == c); 
+   }
 
-   long bits() const;
+   int operator==(long c) const;
+   
+   int operator!=(long c) const { 
+      return !(*this == c); 
+   }
+
+   int operator<(long c) const;
+
+   int operator>=(long c) const {
+      return !(*this < c);
+   }
+
+   int operator<(const ZZ& c) const;
+   
+   int operator>=(const ZZ& c) const {
+      return !(*this < c);
+   }
+   
+   int operator>(long c) const;
+
+   int operator<=(long c) const {
+      return !(*this > c);
+   }
+
+   int operator>(const ZZ& c) const;
+   
+   int operator<=(const ZZ& c) const {
+      return !(*this > c);
+   }
+   
+   friend ostream& operator<<(ostream & os, ZZ& a);
+
+   char * to_string();
+
+   void fit(long m);
+
+   void randbits(rand_t state, long bits);
+
+   void normalise();
+
+   int cmpabs(const ZZ& b) const;
+
+   void zero() {
+      size = 0;
+   }
+
+   int is_zero() const {
+      return size == 0;
+   }
+
+   void one() {
+      fit(1);
+      size = 1;
+      n[0] = 1;
+   }
+
+   int is_one() const {
+      return size == 1 && n[0] == 1;
+   }
+
+   void swap(ZZ& b);
+
+   friend void neg(ZZ& r, const ZZ& a);
+
+   friend void abs(ZZ& r, const ZZ& a) {
+      if (a < 0)
+         neg(r, a);
+      else
+         r = a;
+   }
+
+   friend void add(ZZ& r, const ZZ& a, const ZZ& b);
+
+   friend void sub(ZZ& r, const ZZ& a, const ZZ& b);
+
+   friend void add(ZZ& r, const ZZ& a, long c);
+
+   friend void sub(ZZ& r, const ZZ& a, long c);
+
+   void add(ZZ& r, const ZZ& a, int c) {
+      if (c < 0)
+         sub(r, a, (long) -c);
+      else
+         add(r, a, (long) c);
+   }
+
+   void sub(ZZ& r, const ZZ& a, int c) {
+      if (c < 0)
+         add(r, a, (long) -c);
+      else
+         sub(r, a, (long) c);
+   }
+
+   friend void mul_2exp(ZZ& r, const ZZ& a, long exp);
+
+   friend void div_2exp(ZZ& r, const ZZ& a, long exp);
+
+   friend void mul(ZZ& q, const ZZ& a, long b);
+
+   friend long divrem(ZZ& q, const ZZ& a, long b);
+
+   friend void mul(ZZ& r, const ZZ& a, const ZZ& b);
+
+   friend void divrem(ZZ& q, ZZ& r, const ZZ& a, const ZZ& b);
+
+   friend void div(ZZ& q, const ZZ& a, const ZZ& b);
+
+   friend void gcd(ZZ& g, const ZZ& a, const ZZ& b);
 };
-
-static inline
-int is_even(const ZZ_t& a)
-{
-   return a.size == 0 || (a.n[0] % 2) == 0;
-}
-
-static inline
-int is_odd(const ZZ_t& a)
-{
-   return a.size != 0 && (a.n[0] % 2) == 1;
-}
-
-void swap(ZZ_t& a, ZZ_t& b);
-
-void randbits(ZZ_t& r, rand_t state, long bits);
-
-void random(ZZ_t& r, rand_t state, va_list args);
-
-void divrem(ZZ_t& q, ZZ_t& r, const ZZ_t& a, const ZZ_t& b);
-
-ZZ_t larem(const ZZ_t& a, const ZZ_t& b);
-
-ZZ_t gcd(const ZZ_t & a, const ZZ_t & b);
-
-int jacobi(const ZZ_t& a, const ZZ_t& b);
-
-long set_str(ZZ_t& a, const char * str);
-
-ostream& operator<<(ostream& os, const ZZ_t& z);
-
-ZZ_t fac(long n);
-
-ZZ_t fib(unsigned long n);
-
-ZZ_t powmod(const ZZ_t& a, const ZZ_t& exp, const ZZ_t & n);
-
-int is_prime(const ZZ_t& n);
 
 #endif
 
