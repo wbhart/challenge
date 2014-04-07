@@ -152,6 +152,20 @@ public:
       return size == 1 && n[0] == 1;
    }
 
+   int is_even() const {
+      return size == 0 || n[0] % 2 == 0;
+   }
+
+   int is_odd() const {
+      return !is_even();
+   }
+
+   long bits() const {
+      long usize = ABS(size);
+      
+      return usize == 0 ? 0 : (usize - 1)*WORD_BITS + n_bitcount(n[usize - 1]);
+   }
+
    friend void swap(ZZ& a, ZZ& b);
 
    friend void neg(ZZ& r, const ZZ& a);
