@@ -152,7 +152,7 @@ public:
       return size == 1 && n[0] == 1;
    }
 
-   void swap(ZZ& b);
+   friend void swap(ZZ& a, ZZ& b);
 
    friend void neg(ZZ& r, const ZZ& a);
 

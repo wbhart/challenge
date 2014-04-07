@@ -201,11 +201,11 @@ ZZ& ZZ::operator=(const ZZ& c)
 }
 
 /* w.b. hart */
-void ZZ::swap(ZZ& b)
+void swap(ZZ& a, ZZ& b)
 {
-   nn_swap(n, b.n);
-   SWAP(size, b.size);
-   SWAP(alloc, b.alloc);
+   nn_swap(a.n, b.n);
+   SWAP(a.size, b.size);
+   SWAP(a.alloc, b.alloc);
 }
 
 /******************************************************************************
@@ -693,7 +693,7 @@ void larem(ZZ& r, const ZZ& a, const ZZ& b)
          sub(t, t, b);
    }
 
-   t.swap(r);
+   swap(t, r);
 }
 
 /* w.b. hart */
