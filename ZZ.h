@@ -132,7 +132,7 @@ public:
 
    void normalise();
 
-   int cmpabs(const ZZ& b) const;
+   friend int cmpabs(const ZZ& a, const ZZ& b);
 
    void zero() {
       size = 0;
@@ -198,6 +198,8 @@ public:
    friend void divrem(ZZ& q, ZZ& r, const ZZ& a, const ZZ& b);
 
    friend void div(ZZ& q, const ZZ& a, const ZZ& b);
+
+   friend void larem(ZZ& r, const ZZ& a, const ZZ& b);
 
    friend void gcd(ZZ& g, const ZZ& a, const ZZ& b);
 };

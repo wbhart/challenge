@@ -283,9 +283,9 @@ int ZZ::operator>(const ZZ& c) const
 }
 
 /* w.b. hart */
-int ZZ::cmpabs(const ZZ& b) const
+int cmpabs(const ZZ& a, const ZZ& b)
 {
-   long asize = ABS(size);
+   long asize = ABS(a.size);
    long bsize = ABS(b.size);
    
    if (asize > bsize)
@@ -293,7 +293,7 @@ int ZZ::cmpabs(const ZZ& b) const
    else if (asize < bsize)
       return -1;
 
-   return nn_cmp(n, b.n, asize);
+   return nn_cmp(a.n, b.n, asize);
 }
 
 /******************************************************************************
@@ -661,6 +661,39 @@ void div(ZZ& q, const ZZ& a, const ZZ& b)
       if (q.size < 0 && rsize != 0)
          sub(q, q, 1);
    }
+}
+
+/* w.b. hart -- inspired by Peter Luschny's implementation */
+void larem(ZZ& r, const ZZ& a, const ZZ& b)
+{
+   long asize = ABS(a.size);
+   long bsize = ABS(b.size);
+   long rsize = bsize;
+   long qsize = asize - bsize + 1;
+   ZZ q, h, t(a);
+
+   h.fit(asize);
+
+   div_2exp(h, a, 1);
+   if (a.size < 0)
+      add(h, h, 1);
+
+   if (asize >= bsize) {
+      q.fit(qsize);
+   
+      nn_divrem(q.n, t.n, asize, b.n, bsize);
+         
+      rsize = nn_normalise(t.n, rsize);
+
+      t.size = a.size >= 0 ? rsize : -rsize;
+
+      if ((a.size ^ b.size) < 0 && t.size != 0 && cmpabs(t, h) >= 0)
+         add(t, t, b);
+      else if (cmpabs(t, h) >= 0)
+         sub(t, t, b);
+   }
+
+   t.swap(r);
 }
 
 /* w.b. hart */
