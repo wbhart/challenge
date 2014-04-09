@@ -20,6 +20,9 @@ nn_t.o: nn_t.c $(HEADERS)
 word.o: word.c $(HEADERS)
 	$(CC) -c -o word.o word.c $(INC)
 
+t-Poly: t-Poly.c $(OBJS) $(HEADERS)
+	$(CXX) -o t-Poly t-Poly.c $(OBJS) $(INC) -lm
+
 t-ZZ: t-ZZ.c $(OBJS) $(HEADERS)
 	$(CXX) -o t-ZZ t-ZZ.c $(OBJS) $(INC) -lm
 
@@ -29,6 +32,7 @@ t-numthy: t-numthy.c $(OBJS) $(HEADERS)
 check: $(TESTS)
 	./t-ZZ
 	./t-numthy
+
 clean:
 	rm -f *.o
 	rm -f t-ZZ

@@ -30,8 +30,8 @@
 
 void test_poly_addsub(rand_t state)
 {
-   Poly<ZZ_t> a1, b1, c1;
-   Poly<Poly<Poly<ZZ_t>>> a2, b2, c2;
+   Poly<ZZ> a1, b1, c1;
+   Poly<Poly<Poly<ZZ> > > a2, b2, c2;
    long i;
 
    cout << "add/sub... ";
@@ -61,8 +61,8 @@ void test_poly_addsub(rand_t state)
 
 void test_poly_mul(rand_t state)
 {
-   Poly<ZZ_t> a1, b1, c1;
-   Poly<Poly<ZZ_t>> a2, b2, c2;
+   Poly<ZZ> a1, b1, c1;
+   Poly<Poly<ZZ> > a2, b2, c2;
    long i;
 
    cout << "mul... ";
