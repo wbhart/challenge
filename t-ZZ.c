@@ -484,6 +484,52 @@ void test_gcd(rand_t state)
    cout << "PASS" << endl;
 }
 
+void test_powmod(rand_t state)
+{
+   ZZ a, e1, e2, e, n, q, r1, r2, r3;
+   long i;
+
+   cout << "powmod...";
+  
+   /* ZZ: a * b / b == a */
+   for (i = 0; i < 1000; i++)
+   {
+      long bits1 = n_randint(state, 200) + 1;
+      long bits2 = n_randint(state, 200) + 1;
+      
+      a.randbits(state, bits1);
+      e1.randbits(state, bits2);
+      e2.randbits(state, bits2);
+      n.randbits(state, bits1);
+      
+      divrem(q, a, a, n);
+      
+      mul(e, e1, e2);
+
+      powmod(r1, a, e1, n);
+      powmod(r1, r1, e2, n);
+
+      powmod(r2, a, e2, n);
+      powmod(r2, r2, e1, n);
+
+      powmod(r3, a, e, n);
+
+      if (r1 != r2 || r2 != r3)
+      {
+         cout << "powmod failed" << endl;
+         cout << "a = " << a << endl;
+         cout << "e = " << e << endl;
+         cout << "n = " << n << endl;
+         cout << "r1 = " << r1 << endl;
+         cout << "r2 = " << r2 << endl;
+         cout << "r3 = " << r3 << endl;
+         abort();
+      }
+   }
+
+   cout << "PASS" << endl;
+}
+
 int main(void)
 {   
    rand_t state;
@@ -500,6 +546,7 @@ int main(void)
    test_mul_divrem(state);
    test_mul_div(state);
    test_gcd(state);
+   test_powmod(state);
 
    return 0;
 }
