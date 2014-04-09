@@ -218,5 +218,7 @@ public:
    friend void gcd(ZZ& g, const ZZ& a, const ZZ& b);
 };
 
+void powmod(ZZ& res, const ZZ& a, const ZZ& e, const ZZ& n);
+
 #endif
 

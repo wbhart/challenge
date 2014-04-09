@@ -2,11 +2,14 @@ CXX=g++ -Wall -ansi -pedantic -g -O2
 CC=gcc -Wall -ansi -pedantic -g -O2
 INC=
 LIB=
-OBJS=word.o nn_t.o ZZ.o
-HEADERS=ZZ.h nn_t.h word.h common.h
+OBJS=word.o nn_t.o ZZ.o numthy.o
+HEADERS=numthy.h ZZ.h nn_t.h word.h common.h
 TESTS=t-ZZ
 
 all: $(OBJS)
+
+numthy.o: numthy.c $(HEADERS)
+	$(CXX) -c -o numthy.o numthy.c $(INC)
 
 ZZ.o: ZZ.c $(HEADERS)
 	$(CXX) -c -o ZZ.o ZZ.c $(INC)
