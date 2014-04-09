@@ -4,7 +4,7 @@ INC=
 LIB=
 OBJS=word.o nn_t.o ZZ.o numthy.o
 HEADERS=numthy.h ZZ.h nn_t.h word.h common.h
-TESTS=t-ZZ
+TESTS=t-ZZ t-numthy
 
 all: $(OBJS)
 
@@ -23,9 +23,12 @@ word.o: word.c $(HEADERS)
 t-ZZ: t-ZZ.c $(OBJS) $(HEADERS)
 	$(CXX) -o t-ZZ t-ZZ.c $(OBJS) $(INC) -lm
 
+t-numthy: t-numthy.c $(OBJS) $(HEADERS)
+	$(CXX) -o t-numthy t-numthy.c $(OBJS) $(INC) -lm
+
 check: $(TESTS)
 	./t-ZZ
-
+	./t-numthy
 clean:
 	rm -f *.o
 	rm -f t-ZZ

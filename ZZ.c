@@ -222,6 +222,9 @@ int ZZ::operator==(long c) const
 
 int ZZ::operator==(const ZZ& c) const
 {
+   if (this == &c)
+      return 1;
+   
    if (size != c.size)
       return 0;
 
@@ -247,6 +250,9 @@ int ZZ::operator<(long c) const
 
 int ZZ::operator<(const ZZ& c) const
 {
+   if (this == &c)
+      return 0;
+   
    if (size < c.size)
       return 1;
    else if (size > c.size)
@@ -274,6 +280,9 @@ int ZZ::operator>(long c) const
 
 int ZZ::operator>(const ZZ& c) const
 {
+   if (this == &c)
+      return 0;
+
    if (size > c.size)
       return 1;
    else if (size < c.size)
@@ -287,7 +296,10 @@ int cmpabs(const ZZ& a, const ZZ& b)
 {
    long asize = ABS(a.size);
    long bsize = ABS(b.size);
-   
+
+   if (&a == &b)
+      return 0;
+
    if (asize > bsize)
       return 1;
    else if (asize < bsize)
@@ -595,6 +607,15 @@ void mul(ZZ& r, const ZZ& a, const ZZ& b)
          return;
       }
 
+      if (&r == &a || &r == &b) {
+         ZZ t;
+
+         mul(t, a, b);
+         swap(t, r);
+
+         return;
+      }
+
       r.fit(rsize);
 
       nn_mul(r.n, a.n, asize, b.n, bsize);
@@ -611,7 +632,22 @@ void divrem(ZZ& q, ZZ& r, const ZZ& a, const ZZ& b)
    long bsize = ABS(b.size);
    long rsize = bsize;
    long qsize = asize - bsize + 1;
-   
+   ZZ t;
+
+   if (&q == &b) {
+      divrem(t, r, a, b);
+      swap(q, t);
+
+      return;
+   }
+
+   if (&r == &b) {
+      divrem(q, t, a, b);
+      swap(r, t);
+
+      return;
+   }
+
    r = a;
 
    if (asize < bsize)
@@ -642,6 +678,15 @@ void div(ZZ& q, const ZZ& a, const ZZ& b)
    long qsize = asize - bsize + 1;
    long qsign = (a.size ^ b.size);
    
+   if (&q == &b) {
+      ZZ t;
+
+      div(t, a, b);
+      swap(t, q);
+
+      return;
+   }
+
    if (asize < bsize)
       q.size = 0;
    else {
