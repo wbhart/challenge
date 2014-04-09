@@ -3,15 +3,20 @@ CAS Challenge
 
 This is a mathematical coding challenge.
 
-The idea is to implement mathematical operations following a strict set of rules:
+The idea is to implement mathematical operations following a strict set of 
+rules:
 
-* No implementation of an algorithm may consume more than 30 lines (excluding comment and blank lines, which are not counted).
+* No implementation of an algorithm may consume more than 30 lines (excluding 
+comment and blank lines, which are not counted).
 
-* No two algorithms for computing the same mathematical operation may have the same complexity.
+* No two algorithms for computing the same mathematical operation may have 
+the same complexity.
 
-* An additional top-level function which selects between various algorithms for a given operation may be present, but must also not exceed 30 lines.
+* An additional top-level function which selects between various algorithms 
+for a given operation may be present, but must also not exceed 30 lines.
 
-* All functions must implement recognised mathematical operations and be generally useful.
+* All functions must implement recognised mathematical operations and be 
+generally useful.
 
 * The implementations should not be unduly inefficient.
 
@@ -19,15 +24,12 @@ The idea is to implement mathematical operations following a strict set of rules
 
 * No line of code may exceed 80 characters.
 
-* All code should be readable, commented and well spaced out (remember blank and comment lines are not counted in the total).
+* All code should be readable, commented and well spaced out (remember blank 
+and comment lines are not counted in the total).
 
 * Macros of up to 7 lines are allowed, but must be generally useful.
 
-* All non-generic code must be implemented in pure C with no external libraries.
-
-* Each C module may have a C++ class and wrapper associated with it. There is no limit on the size of the class declaration.
-
-* All generic algorithms should be implemented in C++ and where an underlying C module exists, functions should be pushed down into it where practical, especially if they may be useful by other C algorithms in the module.
+* All generic algorithms should be implemented in C++ 
 
 The challenge is to come up with any of the following:
 
@@ -39,11 +41,16 @@ The challenge is to come up with any of the following:
 
 * New implementation of an existing function in less space
 
-If you develop such things, put them in and place your name as a comment above each function you implemented (in the .c or .cpp file).
+If you develop such things, put them in and place your name as a comment above 
+each function you implemented (in the .c or .cpp file).
 
-If your implementation is better than what is there, replace the existing implementation with your own and add your name above it. We'll eventually have a script which keeps score.
+If your implementation is better than what is there, replace the existing 
+implementation with your own and add your name above it. We'll eventually have
+a script which keeps score.
 
-Feel free to make minor improvements to existing implementations, but not at the expense of speed, clarity or visual appeal. Naturally, minor modifications don't earn points.
+Feel free to make minor improvements to existing implementations, but not at
+the expense of speed, clarity or visual appeal. Naturally, minor modifications
+don't earn points.
 
 There's a Google Group called cas-challenge here:
 
